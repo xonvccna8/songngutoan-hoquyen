@@ -10,7 +10,7 @@ Lời chào (tên gọi tuỳ chọn, chỉ lưu trên máy) · vòng mục tiê
 
 ## §3. Một bài `/hoc/[bai]` — 5 bước
 1. **Từ vựng**: thẻ lật (EN + IPA + nghe thường/chậm → nghĩa VI + câu ví dụ), tự đánh giá Chưa nhớ/Khó/Nhớ/Dễ (ôn lặp ngắt quãng) + trò chơi nhanh 4 câu.
-2. **Hiểu bài**: từng phần: định nghĩa / định lí (khung màu, nghe được), danh sách, hình vẽ, **hình kéo thả** (tứ giác: tổng góc 360°; hình thang cân: góc kề đáy, cạnh bên, đường chéo; hình bình hành: cạnh, góc, đường chéo; hình chữ nhật: đường chéo bằng nhau; hình thoi: đường chéo vuông góc, kéo hai đường chéo bằng nhau → hình vuông), ví dụ giải từng bước (em nghĩ trước rồi mới mở), câu kiểm tra nhanh.
+2. **Hiểu bài**: từng phần: định nghĩa / định lí (khung màu, nghe được), danh sách, hình vẽ, **hình kéo thả** (tứ giác: tổng góc 360°; hình thang cân: góc kề đáy, cạnh bên, đường chéo; hình bình hành: cạnh, góc, đường chéo; hình chữ nhật: đường chéo bằng nhau; hình thoi: đường chéo vuông góc, kéo hai đường chéo bằng nhau → hình vuông; **mô hình diện tích** với thanh trượt a, b cho (a + b)² và a² − b²), ví dụ giải từng bước (em nghĩ trước rồi mới mở), câu kiểm tra nhanh.
 3. **Luyện tập**: 3 mức (Nhận biết / Thông hiểu / Vận dụng); câu soạn sẵn trước, hết thì máy sinh câu mới không giới hạn; gợi ý 3 tầng (Từ vựng → Cách làm → Lời giải); đúng 6 câu là xong bước.
 4. **Luyện nói**: 5 câu Toán tiếng Anh; nghe mẫu → bấm micro → chấm từng từ (xanh / đỏ gạch sóng) và điểm 0–100; 3 câu ≥ 70 điểm là xong. Trình duyệt không hỗ trợ nhận giọng: tự xác nhận đã đọc.
 5. **Kiểm tra**: 5 câu (1 từ vựng + mức 1 + 2 câu mức 2 + mức 3); 3/5 qua bài, 4/5 = 2 sao, 5/5 = 3 sao.
@@ -22,7 +22,7 @@ Kiểu câu hỏi: trắc nghiệm 4 ô (màu + hình), đúng/sai, nhập số 
 - **Sổ lỗi sai**: mọi câu làm sai (trừ câu kiểm tra nhanh) vào sổ, tách lỗi Toán / Ngôn ngữ; làm lại đúng 2 lần liên tiếp thì rời sổ (tối đa 60 câu).
 
 ## §5. Góc công cụ `/cong-cu`
-Tóm tắt kiến thức từng bài · từ điển thuật ngữ (tìm không cần dấu, có phát âm) · cách đọc kí hiệu Toán bằng tiếng Anh (∥, ⊥, ∠, ⇔…).
+**Bảng 7 hằng đẳng thức** (công thức + cách đọc tiếng Anh, nghe được) · tóm tắt kiến thức từng bài · từ điển thuật ngữ (tìm không cần dấu, có phát âm) · cách đọc kí hiệu Toán bằng tiếng Anh (∥, ⊥, ∠, ⇔…).
 
 ## §6. Của em `/cua-em`
 Chỉ số (XP, chuỗi ngày, tỉ lệ đúng, từ đã thuộc) · biểu đồ XP 14 ngày · "Em hay sai ở đâu" (Toán vs Ngôn ngữ) + lời khuyên · 9 huy hiệu · chọn ngôn ngữ hiển thị (Song ngữ / EN / VI) · cài ứng dụng · tải / nhập tệp sao lưu · xoá tiến độ.

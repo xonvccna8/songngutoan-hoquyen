@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { degree, equal, evaluate, factorCount, isExpanded, isFactored, isSimplified, parse, polyOf, prettyInput, toStr } from "@/lib/algebra/poly";
+import { IDENTITIES } from "@/lib/content";
 import { bi, checkAnswer, checkExpr } from "@/lib/content/helpers";
 import type { Bi } from "@/lib/content/types";
 
@@ -73,6 +74,14 @@ describe("kiểm tra dạng", () => {
     const simp = { ...base, type: "expr" as const, form: "simplified" as const, answer: "2x²y" };
     expect(checkExpr(simp, "6x^2y - 4x^2y").note?.vi).toMatch(/thu gọn/);
     expect(checkAnswer(simp, "2x2y")).toBe(true);
+  });
+
+  it("bảy hằng đẳng thức trong Góc công cụ đều đúng (kiểm bằng bộ máy)", () => {
+    expect(IDENTITIES).toHaveLength(7);
+    for (const h of IDENTITIES) {
+      const [l, r] = h.formula.toLowerCase().split("=");
+      expect(equal(polyOf(l), polyOf(r))).toBe(true);
+    }
   });
 
   it("xem trước đẹp", () => {

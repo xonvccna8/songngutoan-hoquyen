@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, ChevronDown, Lightbulb } from "lucide-react";
 import { cn } from "cn";
 import { SayButtons } from "@/components/common";
 import { GeoFigure } from "@/components/geo/figure";
+import { AreaModel } from "@/components/geo/area-model";
 import { Playground } from "@/components/geo/playground";
 import { T } from "@/components/lang";
 import { StepDone } from "@/components/lesson/step-done";
@@ -120,6 +121,8 @@ function BlockView({ block: b, lessonId }: { block: Block; lessonId: string }) {
       );
     case "play":
       return <Playground mode={b.mode} />;
+    case "area":
+      return <AreaModel variant={b.variant} />;
     case "example":
       return <Example block={b} />;
     case "check":

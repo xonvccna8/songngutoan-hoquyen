@@ -64,6 +64,8 @@ export type Block =
   | { kind: "list"; tag?: Bi; items: Bi[] }
   | { kind: "figure"; figure: FigureSpec; caption?: Bi }
   | { kind: "play"; mode: PlayMode }
+  /** Mô hình diện tích cho hằng đẳng thức: (a + b)² hoặc a² − b² */
+  | { kind: "area"; variant: "sum" | "diff" }
   | { kind: "example"; problem: Bi; figure?: FigureSpec; steps: Bi[] }
   | { kind: "check"; question: Question };
 

@@ -7,8 +7,12 @@ import { DON_THUC } from "@/lib/content/lessons/don-thuc";
 import { HINH_BINH_HANH } from "@/lib/content/lessons/hinh-binh-hanh";
 import { HINH_CHU_NHAT } from "@/lib/content/lessons/hinh-chu-nhat";
 import { HINH_THANG_CAN } from "@/lib/content/lessons/hinh-thang-can";
+import { BINH_PHUONG } from "@/lib/content/lessons/binh-phuong";
 import { HINH_THOI_HINH_VUONG } from "@/lib/content/lessons/hinh-thoi-hinh-vuong";
+import { LAP_PHUONG } from "@/lib/content/lessons/lap-phuong";
 import { NHAN_DA_THUC } from "@/lib/content/lessons/nhan-da-thuc";
+import { PHAN_TICH_NHAN_TU } from "@/lib/content/lessons/phan-tich-nhan-tu";
+import { TONG_HIEU_LAP_PHUONG } from "@/lib/content/lessons/tong-hieu-lap-phuong";
 import { TU_GIAC } from "@/lib/content/lessons/tu-giac";
 import type { Bi, LessonContent, Question, Term } from "@/lib/content/types";
 
@@ -22,6 +26,11 @@ export const LESSONS: LessonContent[] = [
   CONG_TRU_DA_THUC,
   NHAN_DA_THUC,
   CHIA_DA_THUC,
+  // Chương II. Hằng đẳng thức đáng nhớ và ứng dụng
+  BINH_PHUONG,
+  LAP_PHUONG,
+  TONG_HIEU_LAP_PHUONG,
+  PHAN_TICH_NHAN_TU,
   // Chương III. Tứ giác
   TU_GIAC,
   HINH_THANG_CAN,
@@ -88,6 +97,17 @@ export function termQuestion(l: LessonContent, rand: () => number = Math.random,
   };
 }
 
+/** Bảy hằng đẳng thức đáng nhớ (Góc công cụ) — `read`: cách đọc tiếng Anh */
+export const IDENTITIES: { no: number; name: Bi; formula: string; read: string }[] = [
+  { no: 1, name: bi("Square of a sum", "Bình phương của một tổng"), formula: "(A + B)² = A² + 2AB + B²", read: "A plus B, all squared, equals A squared plus two A B plus B squared" },
+  { no: 2, name: bi("Square of a difference", "Bình phương của một hiệu"), formula: "(A − B)² = A² − 2AB + B²", read: "A minus B, all squared, equals A squared minus two A B plus B squared" },
+  { no: 3, name: bi("Difference of two squares", "Hiệu hai bình phương"), formula: "A² − B² = (A + B)(A − B)", read: "A squared minus B squared equals A plus B times A minus B" },
+  { no: 4, name: bi("Cube of a sum", "Lập phương của một tổng"), formula: "(A + B)³ = A³ + 3A²B + 3AB² + B³", read: "A plus B, all cubed, equals A cubed plus three A squared B plus three A B squared plus B cubed" },
+  { no: 5, name: bi("Cube of a difference", "Lập phương của một hiệu"), formula: "(A − B)³ = A³ − 3A²B + 3AB² − B³", read: "A minus B, all cubed, equals A cubed minus three A squared B plus three A B squared minus B cubed" },
+  { no: 6, name: bi("Sum of two cubes", "Tổng hai lập phương"), formula: "A³ + B³ = (A + B)(A² − AB + B²)", read: "A cubed plus B cubed equals A plus B times A squared minus A B plus B squared" },
+  { no: 7, name: bi("Difference of two cubes", "Hiệu hai lập phương"), formula: "A³ − B³ = (A − B)(A² + AB + B²)", read: "A cubed minus B cubed equals A minus B times A squared plus A B plus B squared" },
+];
+
 /** Cách đọc kí hiệu Toán bằng tiếng Anh (Góc công cụ) */
 export const SYMBOLS: { sym: string; read: Bi }[] = [
   { sym: "ABCD", read: bi("quadrilateral A B C D", "tứ giác ABCD") },
@@ -104,6 +124,10 @@ export const SYMBOLS: { sym: string; read: Bi }[] = [
   { sym: "S = a × b", read: bi("S equals a times b", "S bằng a nhân b") },
   { sym: "S = AC × BD : 2", read: bi("S equals A C times B D divided by 2", "S bằng AC nhân BD chia 2") },
   { sym: "a²", read: bi("a squared", "a bình phương") },
+  { sym: "a³", read: bi("a cubed", "a lập phương") },
+  { sym: "(a + b)²", read: bi("a plus b, all squared", "bình phương của tổng a cộng b") },
+  { sym: "xⁿ", read: bi("x to the power of n", "x mũ n") },
+  { sym: "3x²y", read: bi("three x squared y", "ba x bình phương y") },
   { sym: "8 cm²", read: bi("8 square centimetres", "8 xăng-ti-mét vuông") },
   { sym: "⇔", read: bi("if and only if", "khi và chỉ khi") },
   { sym: "⇒", read: bi("implies / so", "suy ra") },

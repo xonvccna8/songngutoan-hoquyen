@@ -29,3 +29,6 @@ export const sub = (n: number) => (n < 0 ? `(−${-n})` : String(n));
 
 /** Chọn ngẫu nhiên một phần tử */
 export const pick = <T,>(r: () => number, arr: T[]) => arr[Math.floor(r() * arr.length)];
+
+/** Nhị thức dạng đẹp: bin(3) = "x + 3", bin(-3, "x", 2) = "2x − 3" */
+export const bin = (a: number, v = "x", k = 1) => `${k === 1 ? "" : k}${v} ${a < 0 ? "−" : "+"} ${Math.abs(a)}`;
