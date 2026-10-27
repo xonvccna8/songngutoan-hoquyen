@@ -1,0 +1,190 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ===== Bảng màu "Lớp Song Ngữ" (docs/GIAO-DIEN.md) ===== */
+@theme inline {
+  --color-ink: #1c1b3a;
+  --color-ink-tv: #17163a;
+  --color-ink-2: #55537a;
+  --color-paper: #f6f4ff;
+  --color-line: #e6e2f6;
+  --color-line-2: #e0dbf3;
+
+  --color-blue: #2f5bea;
+  --color-blue-dk: #1e3fb8;
+  --color-blue-soft: #e7ecff;
+  --color-sun: #ffc93c;
+  --color-sun-dk: #c9951a;
+  --color-sun-soft: #fff1d2;
+  --color-coral: #e8492e;
+  --color-coral-dk: #b23620;
+  --color-coral-soft: #ffe3dd;
+  --color-teal: #0e9f8a;
+  --color-teal-dk: #0a7565;
+  --color-teal-soft: #ddf7ee;
+  --color-success-bg: #e9fbf3;
+  --color-success-fg: #0a7a50;
+
+  /* Phông: tiêu đề/con số · chữ thường · trình chiếu tivi */
+  --font-display: var(--font-bricolage);
+  --font-sans: var(--font-be-vietnam);
+  --font-present: var(--font-lexend);
+  --font-heading: var(--font-bricolage);
+
+  /* Biến của shadcn/ui ánh xạ về bảng màu trên */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: #f6f4ff;
+  --foreground: #1c1b3a;
+  --card: #ffffff;
+  --card-foreground: #1c1b3a;
+  --popover: #ffffff;
+  --popover-foreground: #1c1b3a;
+  --primary: #2f5bea;
+  --primary-foreground: #ffffff;
+  --secondary: #efecfb;
+  --secondary-foreground: #1c1b3a;
+  --muted: #efecfb;
+  --muted-foreground: #55537a;
+  --accent: #efecfb;
+  --accent-foreground: #1c1b3a;
+  --destructive: #e8492e;
+  --border: #e6e2f6;
+  --input: #e0dbf3;
+  --ring: #2f5bea;
+  --radius: 0.875rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-paper text-ink;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
+}
+
+/* Song ngữ: tiếng Anh chữ thẳng màu nhấn, tiếng Việt xám nghiêng */
+@utility text-en {
+  color: var(--color-blue-dk);
+  font-style: normal;
+}
+@utility text-vi {
+  color: var(--color-ink-2);
+  font-style: italic;
+}
+
+/* Thẻ chuẩn: viền 2px, bo 20px */
+@utility card-lsn {
+  background: #fff;
+  border: 2px solid var(--color-line);
+  border-radius: 20px;
+}
+
+/* Nền chấm nhẹ cho các trang lớn */
+@utility bg-dots {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--color-ink) 9%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(var(--r, 0deg));
+  }
+}
+@utility animate-float {
+  animation: float-y 6s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+@utility animate-blink {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: blink 4s infinite;
+}
+
+@keyframes shake-x {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-8px);
+  }
+  40%,
+  80% {
+    transform: translateX(8px);
+  }
+}
+@utility animate-shake {
+  animation: shake-x 0.4s ease-in-out;
+}
+
+/* In phiếu: ẩn mọi thứ trừ vùng in */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+}
