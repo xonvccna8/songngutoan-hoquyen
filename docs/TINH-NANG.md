@@ -1,51 +1,34 @@
-# Đặc tả chức năng
+# Đặc tả chức năng — Toán 8 Song Ngữ
 
-Bối cảnh: GV có laptop, lớp có tivi (HDMI), HS dùng điện thoại; Wi-Fi có thể yếu. GV Toán không giỏi tiếng Anh → web có câu mẫu kèm phát âm, AI chấm phát âm.
+Người dùng: học sinh lớp 8 tự học (ở nhà, trên điện thoại hoặc máy tính; Wi-Fi có thể yếu). Không đăng nhập; tiến độ lưu trên máy.
 
-## §1. Vai trò & đăng nhập
-- Quản trị (Google/email): quản lý GV, lớp, duyệt tiết mẫu. GV (Google/email): lớp mình dạy. HS: **mã lớp + chọn tên + PIN 6 số**, không email.
-- Vai trò = custom claims (`role`, `schoolId`, `classIds`).
-- `/api/auth/student`: kiểm PIN (hash bcrypt), trả custom token. Sai 5 lần khóa 15 phút. GV đặt lại PIN.
-- GV in phiếu đăng nhập cả lớp (tên, mã lớp, PIN, QR có sẵn mã lớp). HS giữ phiên đăng nhập dài.
+## §1. Trang chủ `/`
+Lời chào (tên gọi tuỳ chọn, chỉ lưu trên máy) · vòng mục tiêu ngày (50 XP) · thẻ "Học tiếp" (bài + bước kế tiếp) · số việc cần ôn · 3 thẻ bài của chủ đề · câu tiếng Anh hôm nay có nút nghe.
 
-## §2. Quản lý lớp
-Trang chủ GV: thẻ lớp (sĩ số, đang trực tuyến, điểm TB tuần, số em cần chú ý, nút "Bắt đầu tiết học"). Quản lý lớp: thêm HS (gõ hoặc dán từ Excel), chia tổ, đặt lại PIN, in phiếu, cài đặt ngưỡng trạng thái và giờ yên lặng.
+## §2. Bản đồ học `/hoc`
+10 chương Toán 8 (Kết nối tri thức), màu theo mạch (Số–Đại số / Hình học / Thống kê–Xác suất). Bài có nội dung: % hoàn thành + sao; bài khác: "Sắp có".
 
-## §3. Dạy trực tiếp (theo `reference/lop-song-ngu.html`)
-Route: `/present/[sessionId]` (tivi) · `/teacher/session/[sessionId]` (laptop) · `/s/live` (điện thoại).
-1. Một nút **Tiếp** (→, Space, PageDown, bút trình chiếu): hiện bước → mở câu hỏi → khóa → công bố → sang trang. Có dòng gợi ý "Bấm Tiếp để…". ← lùi.
-2. Điện thoại hiện đúng nội dung tivi; khi câu hỏi mở thì chuyển sang chế độ trả lời.
-3. Kiểu trả lời: chọn đáp án, nhập số, gõ chữ, nói (AI chấm phát âm), kéo nhãn, chụp ảnh nhóm.
-4. Công tắc Anh / Song ngữ / Việt trên tivi (phím L); mỗi HS có công tắc riêng.
-5. Bảng từ có phát âm; gọi tên ngẫu nhiên (ưu tiên em chưa gọi); đồng hồ (hết giờ tự khóa); "Phones up/down"; nút Giơ tay.
-6. Câu gõ chỉ hiện trên laptop, GV bấm "Chiếu" mới lên tivi.
-7. Laptop: lưới HS với trạng thái thời gian thực, số đã trả lời, % đúng, tách lỗi Toán/Ngôn ngữ, hàng chờ giơ tay, bấm 1 chạm "Nhắc chú ý".
-8. Luyện nói: tivi chỉ hiện top 5; laptop xếp thấp → cao.
-9. Vào muộn/mất mạng vào lại nhận ngay trạng thái hiện tại. Kết thúc tiết: lưu kết quả, cập nhật thống kê, báo cáo tiết.
+## §3. Một bài `/hoc/[bai]` — 5 bước
+1. **Từ vựng**: thẻ lật (EN + IPA + nghe thường/chậm → nghĩa VI + câu ví dụ), tự đánh giá Chưa nhớ/Khó/Nhớ/Dễ (ôn lặp ngắt quãng) + trò chơi nhanh 4 câu.
+2. **Hiểu bài**: từng phần: định nghĩa / định lí (khung màu, nghe được), danh sách, hình vẽ, **hình kéo thả** (tứ giác: tổng góc 360°; hình bình hành: cạnh, góc, đường chéo; hình chữ nhật: đường chéo bằng nhau), ví dụ giải từng bước (em nghĩ trước rồi mới mở), câu kiểm tra nhanh.
+3. **Luyện tập**: 3 mức (Nhận biết / Thông hiểu / Vận dụng); câu soạn sẵn trước, hết thì máy sinh câu mới không giới hạn; gợi ý 3 tầng (Từ vựng → Cách làm → Lời giải); đúng 6 câu là xong bước.
+4. **Luyện nói**: 5 câu Toán tiếng Anh; nghe mẫu → bấm micro → chấm từng từ (xanh / đỏ gạch sóng) và điểm 0–100; 3 câu ≥ 70 điểm là xong. Trình duyệt không hỗ trợ nhận giọng: tự xác nhận đã đọc.
+5. **Kiểm tra**: 5 câu (1 từ vựng + mức 1 + 2 câu mức 2 + mức 3); 3/5 qua bài, 4/5 = 2 sao, 5/5 = 3 sao.
 
-## §4. Theo dõi học sinh
-- Trang lớp, tab: **Tổng quan** (chỉ số + lưới thẻ HS: trạng thái màu+biểu tượng+chữ, điểm, % đúng, điểm Toán/Ngôn ngữ, phát âm, chuỗi ngày, hoạt động gần nhất, nút chuông; lọc Cần chú ý/Chưa học/Tích cực, theo tổ) · **Bảng điểm** (HS × tiết/bài, xuất Excel) · **Hoạt động** (dòng thời gian) · **Phân tích** (tiến bộ tuần, câu sai nhiều, thuật ngữ yếu) · **Quản lý lớp**.
-- Hồ sơ HS: biểu đồ điểm, từng tiết (vào lúc nào, trả lời/đúng bao nhiêu, rời trang mấy lần), bài tập (mở/làm/trễ/thời gian thật), chi tiết từng câu, từ phát âm sai, lịch sử tin nhắn; nút Nhắc chú ý / Nhắn tin / Khen / Đặt lại PIN.
+Kiểu câu hỏi: trắc nghiệm 4 ô (màu + hình), đúng/sai, nhập số (chấp nhận "6,5", "70°"), gõ thuật ngữ (cho sai chính tả nhẹ). Mỗi câu gắn **mức** và **loại lỗi** (Toán / Ngôn ngữ).
 
-## §5. Nhắn tin & cảnh báo
-- Gửi cho: 1 em / nhiều em / tổ / cả lớp. Mẫu tin nhanh song ngữ, GV sửa được.
-- Loại: **Chú ý** (chuông 2 lần + rung + khung vàng toàn màn hình đến khi bấm "Em đã chú ý") · **Nhắc nhở** (âm vừa + thẻ) · **Khen ngợi** (âm vui, có thể cộng điểm) · **Thông báo** (im lặng).
-- Trạng thái: Đã gửi → Đã nhận → Đã xem → Đã xác nhận. HS trả lời nhanh: "Em hiểu rồi" / "Em cần giúp". Không có chat giữa HS.
-- Kênh: web đang mở → listener Firestore + âm thanh + `navigator.vibrate`; web đóng → FCM qua service worker (iPhone phải thêm vào màn hình chính, iOS 16.4+).
-- Trình duyệt chặn tự phát âm thanh: lần đăng nhập đầu hiện nút "Bật âm thanh thông báo".
-- Giới hạn 3 tin Chú ý/em/tiết; giờ yên lặng 21:00–6:30; lưu mọi tin cho quản trị xem.
+## §4. Ôn tập thông minh `/on-tap`
+- Thẻ từ đến hạn theo lịch SM-2 rút gọn.
+- **Sổ lỗi sai**: mọi câu làm sai (trừ câu kiểm tra nhanh) vào sổ, tách lỗi Toán / Ngôn ngữ; làm lại đúng 2 lần liên tiếp thì rời sổ (tối đa 60 câu).
 
-## §6. Học sinh tự học
-Trang chủ (nút Vào tiết học, bài đến hạn, chuỗi ngày, điểm, huy hiệu, tin nhắn) · thẻ từ vựng có phát âm, ôn lặp ngắt quãng · luyện phát âm (Nghe mẫu/Nghe chậm) · bài tập gợi ý 3 tầng (từ vựng → cách làm → lời giải) · xem lại tiết · kết quả của em · bảng xếp hạng chỉ top 5 + hạng của mình · thi đua theo tổ.
-Giao bài: chọn câu từ tiết/ngân hàng, hạn nộp, giao lớp/tổ/em, tự chấm, nhắc trước hạn 1 ngày.
+## §5. Góc công cụ `/cong-cu`
+Tóm tắt kiến thức từng bài · từ điển thuật ngữ (tìm không cần dấu, có phát âm) · cách đọc kí hiệu Toán bằng tiếng Anh (∥, ⊥, ∠, ⇔…).
 
-## §7. Soạn bài & thuật ngữ
-- Khung CV 5512 + 4C (Content, Communication, Cognition, Culture); 4 hoạt động, mỗi hoạt động gồm trang trình chiếu; mỗi khối nội dung có số bước hiện.
-- Hai cột Việt–Anh; chèn thuật ngữ, chèn câu lệnh lớp học; ghi chú GV có câu tiếng Anh kèm nút nghe.
-- Loại trang: nội dung, trắc nghiệm, đúng/sai, nhập số, gõ chữ, luyện nói, kéo nhãn, chụp ảnh, tổng kết. Xem trước tivi/điện thoại; nhân bản; xuất Word; trạng thái Nháp → Chờ duyệt → Đã duyệt.
-- Thuật ngữ: en, IPA, vi, hình, câu ví dụ, cách đọc kí hiệu, trạng thái duyệt. Không dịch máy tự động.
+## §6. Của em `/cua-em`
+Chỉ số (XP, chuỗi ngày, tỉ lệ đúng, từ đã thuộc) · biểu đồ XP 14 ngày · "Em hay sai ở đâu" (Toán vs Ngôn ngữ) + lời khuyên · 9 huy hiệu · chọn ngôn ngữ hiển thị (Song ngữ / EN / VI) · cài ứng dụng · tải / nhập tệp sao lưu · xoá tiến độ.
 
-## §8. AI
-- Phát âm: Web Speech API + so khớp từng từ (như bản thử); interface `PronunciationScorer` để sau thay bằng Azure Pronunciation Assessment qua `/api/speech/assess`. Không lưu ghi âm.
-- Chấm câu gõ: so khớp gần đúng; tùy chọn LLM qua `/api/ai/grade`; GV sửa được.
-- Trợ lý soạn bài: từ giáo án tiếng Việt → đề xuất trang song ngữ, luôn là Nháp chờ duyệt. Giới hạn số lần gọi AI.
+## §7. Điểm XP
+Đúng +10 (dùng ≥ 2 gợi ý: +5) · xong một bước +20 (một lần) · ôn thẻ +2 · câu nói lần đầu ≥ 80 điểm +10 · mỗi sao mới ở bài kiểm tra +20.
+
+## §8. Riêng tư & ngoại tuyến
+Không tài khoản, không máy chủ, không gửi dữ liệu. Không lưu ghi âm (nhận giọng nói do trình duyệt xử lý). Service worker lưu sẵn trang để học khi mất mạng.

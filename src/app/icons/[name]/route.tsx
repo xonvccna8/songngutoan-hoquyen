@@ -1,4 +1,4 @@
-// GĐ 7 — Biểu tượng ứng dụng (PWA) vẽ từ logo: /icons/192 · /icons/512 · /icons/maskable (Android cắt viền) · /icons/apple (iPhone)
+// Biểu tượng ứng dụng (PWA) vẽ từ logo: /icons/192 · /icons/512 · /icons/maskable (Android cắt viền) · /icons/apple (iPhone)
 import { ImageResponse } from "next/og";
 
 const ICONS: Record<string, { size: number; pad: number; round: boolean }> = {

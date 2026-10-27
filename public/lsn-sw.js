@@ -1,15 +1,9 @@
-/* Lớp Song Ngữ — service worker nhận thông báo đẩy (FCM) khi web đã đóng hoặc tắt màn hình.
-   Máy chủ chỉ gửi "data"; ở đây tự hiện thông báo để điều khiển chuông/rung/giữ trên màn hình. */
-const VIBRATE = {
-  attention: [400, 150, 400, 150, 400, 600, 400, 150, 400],
-  reminder: [250, 120, 250],
-  praise: [120, 80, 120, 80, 300],
-  notice: [],
-};
-
-// GĐ 7 — Trang "mất mạng": chỉ lưu sẵn 1 trang tĩnh + biểu tượng; KHÔNG lưu dữ liệu bài học / học sinh
-const CACHE = "lsn-shell-v1";
-const SHELL = ["/offline.html", "/icons/192"];
+/* Toán 8 Song Ngữ — service worker: học được cả khi mất mạng.
+   - Tệp tĩnh của Next (/_next/static, biểu tượng): lấy từ bộ nhớ đệm trước (tên tệp đã có mã phiên bản).
+   - Trang: lấy từ mạng trước; mất mạng thì dùng bản đã lưu; chưa từng mở thì hiện /offline.html.
+   Tiến độ học nằm trong localStorage nên không cần mạng. */
+const CACHE = "t8sn-v1";
+const SHELL = ["/", "/hoc", "/on-tap", "/cong-cu", "/cua-em", "/offline.html", "/icons/192"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
@@ -25,68 +19,44 @@ self.addEventListener("activate", (e) =>
   e.waitUntil(
     (async () => {
       const keys = await caches.keys();
-      await Promise.all(keys.filter((k) => k.startsWith("lsn-") && k !== CACHE).map((k) => caches.delete(k)));
-      if (self.registration.navigationPreload) await self.registration.navigationPreload.enable();
+      await Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)));
       await self.clients.claim();
     })()
   )
 );
 
-// Chỉ xử lý khi mở trang (điều hướng): có mạng thì đi mạng như thường, mất mạng thì hiện trang offline
-self.addEventListener("fetch", (event) => {
-  if (event.request.mode !== "navigate") return;
-  event.respondWith(
-    (async () => {
-      try {
-        const pre = await event.preloadResponse;
-        return pre || (await fetch(event.request));
-      } catch (_) {
-        return (await caches.match("/offline.html")) || new Response("Mất kết nối mạng", { status: 503, headers: { "Content-Type": "text/plain; charset=utf-8" } });
-      }
-    })()
-  );
-});
+self.addEventListener("fetch", (e) => {
+  const req = e.request;
+  if (req.method !== "GET") return;
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
 
-self.addEventListener("push", (event) => {
-  let payload = {};
-  try {
-    payload = event.data ? event.data.json() : {};
-  } catch (_) {}
-  const d = payload.data || payload;
-  const kind = d.kind || "notice";
-  const silent = d.silent === "1" || kind === "notice";
+  // Tệp tĩnh: bộ nhớ đệm trước
+  if (url.pathname.startsWith("/_next/static/") || url.pathname.startsWith("/icons/")) {
+    e.respondWith(
+      caches.match(req).then(
+        (hit) =>
+          hit ||
+          fetch(req).then((res) => {
+            if (res.ok) caches.open(CACHE).then((c) => c.put(req, res.clone()));
+            return res;
+          })
+      )
+    );
+    return;
+  }
 
-  event.waitUntil(
-    (async () => {
-      // Web đang mở và hiển thị → trang tự báo (âm thanh + khung tin), không hiện trùng
-      const wins = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
-      if (wins.some((w) => w.visibilityState === "visible")) return;
-      await self.registration.showNotification(d.title || "Lớp Song Ngữ", {
-        body: d.body || "",
-        tag: d.mid || "lsn",
-        renotify: true,
-        requireInteraction: kind === "attention",
-        silent,
-        vibrate: silent ? undefined : VIBRATE[kind] || VIBRATE.reminder,
-        data: { url: d.url || "/s", mid: d.mid },
-      });
-    })()
-  );
-});
-
-self.addEventListener("notificationclick", (event) => {
-  event.notification.close();
-  const url = (event.notification.data && event.notification.data.url) || "/s";
-  event.waitUntil(
-    (async () => {
-      const wins = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
-      for (const w of wins) {
-        if ("focus" in w) {
-          await w.focus();
-          return;
-        }
-      }
-      await self.clients.openWindow(url);
-    })()
-  );
+  // Trang và dữ liệu điều hướng của Next: mạng trước, mất mạng dùng bản đã lưu
+  const isPage = req.mode === "navigate";
+  const isRsc = req.headers.get("RSC") === "1";
+  if (isPage || isRsc) {
+    e.respondWith(
+      fetch(req)
+        .then((res) => {
+          if (res.ok) caches.open(CACHE).then((c) => c.put(req, res.clone()));
+          return res;
+        })
+        .catch(async () => (await caches.match(req)) || (isPage ? caches.match("/offline.html") : Response.error()))
+    );
+  }
 });

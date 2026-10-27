@@ -1,7 +1,7 @@
 "use client";
 
-// GĐ 7 — Thẻ "Cài ứng dụng" cho học sinh. Android/Chrome: nút cài ngay. iPhone: hướng dẫn "Thêm vào MH chính"
-// (bắt buộc trên iPhone để nhận thông báo khi tắt màn hình). Đã cài hoặc đã ẩn thì không hiện.
+// Thẻ "Cài ứng dụng". Android/Chrome: nút cài ngay. iPhone: hướng dẫn "Thêm vào MH chính"
+// (mở nhanh, học được cả khi mất mạng). Đã cài hoặc đã ẩn thì không hiện.
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { Download, Share, SquarePlus, X } from "lucide-react";
 import { LogoMark } from "@/components/brand/logo";
@@ -57,7 +57,7 @@ export function InstallCard() {
       <div className="card-lsn relative flex items-start gap-3 p-4">
         <LogoMark className="size-11 shrink-0" />
         <div className="min-w-0 flex-1 text-sm">
-          <b className="block text-base">Cài “Lớp Song Ngữ” lên điện thoại</b>
+          <b className="block text-base">Cài “Toán 8 Song Ngữ” lên điện thoại</b>
           {env === "ios" ? (
             <ol className="mt-1 space-y-1 text-ink-2">
               <li className="flex items-center gap-1.5">
@@ -70,7 +70,7 @@ export function InstallCard() {
             </ol>
           ) : (
             <>
-              <p className="mt-0.5 text-ink-2">Mở nhanh như ứng dụng, nhận thông báo kể cả khi tắt màn hình.</p>
+              <p className="mt-0.5 text-ink-2">Mở nhanh như ứng dụng, học được cả khi mất mạng.</p>
               <button
                 onClick={async () => {
                   await evt!.prompt();

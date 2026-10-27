@@ -1,5 +1,9 @@
 // Khung chương trình Toán THCS (CT GDPT 2018) theo bộ sách Kết nối tri thức — xem docs/KE-HOACH-TRANG-GIAO-VIEN.md
-import type { Bi } from "@/lib/live/types";
+/** Văn bản song ngữ */
+export interface Bi {
+  en: string;
+  vi: string;
+}
 
 /** 3 mạch nội dung CT 2018 */
 export type Strand = "sd" | "hh" | "tk";

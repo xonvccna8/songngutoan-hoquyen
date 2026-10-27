@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // firebase-admin chỉ chạy phía máy chủ, không đóng gói vào bundle
-  serverExternalPackages: ["firebase-admin"],
-  // GĐ 7 — header an toàn cơ bản; micro chỉ cho chính trang (luyện nói), không camera / vị trí
+  // Header an toàn cơ bản; micro chỉ cho chính trang (luyện nói), không camera / vị trí
   async headers() {
     return [
       {

@@ -1,6 +1,6 @@
 "use client";
 
-// GĐ 7 — Đăng ký service worker cho mọi trang (trang "mất mạng" + thông báo đẩy dùng chung /lsn-sw.js).
+// Đăng ký service worker cho mọi trang (/lsn-sw.js: học được khi mất mạng).
 // Chỉ bật trên bản chạy thật để khi phát triển không bị bộ nhớ đệm làm rối.
 import { useEffect } from "react";
 

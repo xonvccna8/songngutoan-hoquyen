@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Be_Vietnam_Pro, Bricolage_Grotesque, Lexend } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { SwRegister } from "@/components/pwa/sw-register";
-import { AuthProvider } from "@/lib/auth/auth-context";
+import { Shell } from "@/components/shell";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -24,11 +24,11 @@ const lexend = Lexend({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Lớp Song Ngữ", template: "%s · Lớp Song Ngữ" },
-  description: "Dạy và học Toán song ngữ Việt – Anh cho THCS",
-  applicationName: "Lớp Song Ngữ",
-  // iPhone: "Thêm vào màn hình chính" → mở như ứng dụng, nhận được thông báo đẩy
-  appleWebApp: { capable: true, title: "Lớp Song Ngữ", statusBarStyle: "black-translucent" },
+  title: { default: "Toán 8 Song Ngữ", template: "%s · Toán 8 Song Ngữ" },
+  description: "Tự học Toán lớp 8 song ngữ Việt – Anh: hiểu bài, luyện tập, luyện nói, ôn tập thông minh",
+  applicationName: "Toán 8 Song Ngữ",
+  // iPhone: "Thêm vào màn hình chính" → mở như ứng dụng
+  appleWebApp: { capable: true, title: "Toán 8", statusBarStyle: "black-translucent" },
   icons: { apple: "/icons/apple", icon: [{ url: "/icons/192", sizes: "192x192", type: "image/png" }] },
   formatDetection: { telephone: false },
 };
@@ -46,7 +46,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${bricolage.variable} ${beVietnam.variable} ${lexend.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-        <AuthProvider>{children}</AuthProvider>
+        <Shell>{children}</Shell>
         <Toaster />
         <SwRegister />
       </body>

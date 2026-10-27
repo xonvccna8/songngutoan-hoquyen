@@ -7,7 +7,5 @@ export default defineConfig({
   },
   test: {
     include: ["tests/**/*.test.ts"],
-    // Test rules cần Emulator → chỉ chạy qua "npm run test:rules"
-    exclude: process.env.FIRESTORE_EMULATOR_HOST ? [] : ["tests/firestore.rules.test.ts"],
   },
 });

@@ -1,18 +1,16 @@
 # Các giai đoạn
 
-Làm lần lượt. Mỗi giai đoạn chỉ đọc các file ghi ở cột "Đọc".
+| GĐ | Làm gì | Trạng thái |
+|---|---|---|
+| A | Bỏ phần giáo viên / quản trị / Firebase; khung web học sinh lưu trên máy; 5 bước học; ôn tập; công cụ; trang Của em; PWA ngoại tuyến | Xong (27/10/2026) |
+| B | Nội dung chủ đề **Tứ giác – Hình bình hành – Hình chữ nhật** (bài 10, 12, 13) | Xong (27/10/2026) |
+| C | Hoàn thiện Chương III: Hình thang cân (bài 11), Hình thoi và hình vuông (bài 14) + hình kéo thả tương ứng | Tiếp theo |
+| D | Chương I–II: Đa thức, Hằng đẳng thức (nhiều bộ sinh câu Đại số) | Sau |
+| E | Các chương còn lại; đề ôn giữa kì / cuối kì tổng hợp nhiều bài | Sau |
+| F | Deploy Vercel, thử trên điện thoại thật, README hoàn chỉnh | Khi sẵn sàng |
 
-| GĐ | Làm gì | Đọc | Xong khi |
-|---|---|---|---|
-| 1 | Khởi tạo dự án, kết nối Firebase, đăng nhập 3 vai trò, quản lý lớp & học sinh, in phiếu PIN, script seed | TINH-NANG §1, §2 · DU-LIEU · GIAO-DIEN | GV tạo lớp 7A 30 em; HS đăng nhập bằng mã lớp + PIN trên điện thoại thật |
-| 2 | Dạy trực tiếp 3 màn hình (tivi/laptop/điện thoại) đồng bộ Firestore; nhập tiết Tam giác cân | TINH-NANG §3 · reference/lop-song-ngu.html | Laptop + tivi + ≥3 điện thoại chạy trọn tiết, điểm lưu đúng |
-| 3 | Trạng thái học thời gian thực, trang lớp, hồ sơ HS, bảng điểm, xuất Excel | TINH-NANG §4 · DU-LIEU (trạng thái học) | Click vào lớp thấy ai học/không học, đúng/sai, điểm từng em |
-| 4 | Nhắn tin 4 loại, âm thanh, rung, khung toàn màn hình, xác nhận, FCM, giơ tay | TINH-NANG §5 | GV gửi "Chú ý" → điện thoại HS đổ chuông (kể cả tắt màn hình, Android) → GV thấy "Đã xác nhận" |
-| 5 | Tự học: bài tập về nhà, thẻ từ vựng lặp ngắt quãng, luyện phát âm, trò chơi hóa | TINH-NANG §6 | HS tự học ở nhà; GV thấy thời gian học thật |
-| 6 | Soạn bài theo CV 5512, ngân hàng thuật ngữ, xuất Word, thư viện tiết mẫu, trợ lý AI | TINH-NANG §7, §8 | GV khác tự soạn và dạy được tiết mới |
-| 7 | PWA, tối ưu, README tiếng Việt, deploy Vercel | — | Chạy ổn định 1 tuần tại trường |
-
-Nên làm xong GĐ 1–2, dạy thử trên lớp, rồi mới làm tiếp.
-
-## Bàn giao cuối cùng
-`README.md` (cài đặt, Firebase từng bước, biến môi trường, seed, deploy) · `HUONG_DAN_GIAO_VIEN.md` · `HUONG_DAN_HOC_SINH.md` · `firestore.rules` + test.
+## Cách thêm một bài mới
+1. Tạo `src/lib/content/lessons/<ten-bai>.ts` theo mẫu `hinh-binh-hanh.ts`: `id` trùng mã bài trong `src/lib/curriculum/kntt.ts` (ví dụ `k8-11`), `slug`, thuật ngữ (≥ 8, có IPA), các phần lý thuyết, câu soạn sẵn, **bộ sinh câu cho đủ 3 mức**, 5 câu luyện nói, tóm tắt.
+2. Thêm bài vào mảng `LESSONS` trong `src/lib/content/index.ts`.
+3. Chạy `npm test` — test tự kiểm mọi câu tự sinh (300 lần mỗi bộ) có đáp án hợp lệ.
+4. Hình kéo thả mới: thêm chế độ trong `src/components/geo/playground.tsx`.

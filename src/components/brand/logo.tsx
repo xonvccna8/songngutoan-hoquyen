@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn } from "cn";
 
-/** Biểu trưng: 4 hình học xếp thành ô vuông + chữ "Lớp Song Ngữ" */
+/** Biểu trưng: 4 hình học xếp thành ô vuông + chữ "Toán 8 Song Ngữ" */
 export function LogoMark({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 40 40" className={cn("size-9", className)} aria-hidden>
@@ -30,11 +30,11 @@ export function Logo({
       <LogoMark className="transition-transform group-hover:-rotate-6" />
       <span className="flex flex-col leading-none">
         <span className={cn("font-display text-lg font-extrabold", tone === "light" ? "text-white" : "text-ink")}>
-          Lớp Song Ngữ
+          Toán 8 Song Ngữ
         </span>
         {sub && (
           <span className={cn("mt-0.5 text-[11px] font-semibold tracking-wide", tone === "light" ? "text-white/60" : "text-ink-2")}>
-            Bilingual Math · THCS
+            Bilingual Math · Grade 8
           </span>
         )}
       </span>

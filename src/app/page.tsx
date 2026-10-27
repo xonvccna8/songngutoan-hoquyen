@@ -1,219 +1,139 @@
+"use client";
+
+// Trang chủ: lời chào, mục tiêu ngày, "Học tiếp", số việc cần ôn, lộ trình chủ đề, câu tiếng Anh hôm nay
+import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, BarChart3, BellRing, ChevronRight, Languages, MonitorPlay, Smartphone, Users } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
-import { Logo } from "@/components/brand/logo";
+import { ArrowRight, Pencil, Repeat2, Sparkles } from "lucide-react";
 import { Tam } from "@/components/brand/tam";
-import { FloatingShapes, SHAPE_COLORS, ShapeIcon, type ShapeKind } from "@/components/brand/shapes";
-import { cn } from "cn";
-
-const ANSWERS: { kind: ShapeKind; en: string }[] = [
-  { kind: "triangle", en: "sides" },
-  { kind: "diamond", en: "angles" },
-  { kind: "circle", en: "vertices" },
-  { kind: "square", en: "heights" },
-];
-
-const FEATURES = [
-  {
-    icon: MonitorPlay,
-    color: "bg-blue",
-    title: "Một nút Tiếp cho cả tiết",
-    en: "One button runs the lesson",
-    text: "Hiện từng bước, mở câu hỏi, khoá, công bố đáp án — bằng phím Space hay bút trình chiếu.",
-  },
-  {
-    icon: Smartphone,
-    color: "bg-coral",
-    title: "Tivi · Laptop · Điện thoại",
-    en: "Three screens in sync",
-    text: "Điện thoại học sinh hiện đúng nội dung trên tivi, tự chuyển sang chế độ trả lời khi câu hỏi mở.",
-  },
-  {
-    icon: Languages,
-    color: "bg-teal",
-    title: "Song ngữ có phát âm",
-    en: "Bilingual, with pronunciation",
-    text: "Bảng thuật ngữ, câu mẫu kèm nút nghe; giáo viên Toán không cần giỏi tiếng Anh vẫn dạy tự tin.",
-  },
-  {
-    icon: BarChart3,
-    color: "bg-sun",
-    title: "Theo dõi từng em",
-    en: "Every student, in real time",
-    text: "Ai đang học, ai rời trang, đúng sai phần Toán hay phần Ngôn ngữ — thấy ngay trên laptop.",
-  },
-];
+import { Loader, Ring, SayButtons, SectionTitle } from "@/components/common";
+import { LessonCard } from "@/components/lesson-card";
+import { T } from "@/components/lang";
+import { buttonVariants } from "@/components/ui/button";
+import { LESSONS } from "@/lib/content";
+import { DAILY_GOAL, lessonDone, nextStep, todayXp } from "@/lib/progress/logic";
+import { STEP_INFO } from "@/lib/progress/steps";
+import { dueCards } from "@/lib/progress/srs";
+import { update, useHydrated, useNow, useProgress } from "@/lib/progress/store";
 
 export default function Home() {
+  const p = useProgress();
+  const hydrated = useHydrated();
+  const [editName, setEditName] = useState(false);
+  const now = useNow();
+  if (!hydrated) return <Loader />;
+
+  const today = todayXp(p, now);
+  const next = LESSONS.find((l) => lessonDone(p.lessons[l.id]) < 1) ?? LESSONS[LESSONS.length - 1];
+  const step = nextStep(p.lessons[next.id]);
+  const toReview = dueCards(p.cards, now).length + p.mistakes.length;
+  const allSpeak = LESSONS.flatMap((l) => l.speak);
+  const daily = allSpeak[Math.floor(now / 86_400_000) % allSpeak.length];
+  const started = Object.keys(p.lessons).length > 0;
+
   return (
-    <main className="relative flex-1 overflow-hidden">
-      {/* Thanh trên */}
-      <header className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8">
-        <Logo />
-        <nav className="flex items-center gap-2">
-          <Link href="/login" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "hidden sm:inline-flex")}>
-            Giáo viên
-          </Link>
-          <Link href="/s/login" className={buttonVariants({ variant: "ink", size: "sm" })}>
-            Vào lớp <ArrowRight />
-          </Link>
-        </nav>
-      </header>
-
-      {/* Hero */}
-      <section className="relative">
-        <FloatingShapes />
-        <div className="bg-dots absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 pt-6 pb-20 sm:px-8 lg:grid-cols-[1.05fr_1fr] lg:pt-14">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full border-2 border-line bg-white px-3 py-1.5 text-xs font-bold text-ink-2">
-              <span className="size-2 rounded-full bg-teal" /> Toán THCS · Song ngữ Việt – Anh
-            </span>
-            <h1 className="mt-5 text-[2.6rem] leading-[1.02] font-extrabold sm:text-6xl lg:text-[4.2rem]">
-              Mỗi tiết Toán,{" "}
-              <span className="relative whitespace-nowrap">
-                <span className="relative z-10">thêm một</span>
-                <span className="absolute inset-x-0 bottom-1 -z-0 h-4 rounded-full bg-sun/70 sm:h-5" />
-              </span>{" "}
-              tiết tiếng Anh.
-            </h1>
-            <p className="text-en mt-4 font-display text-xl font-semibold sm:text-2xl">Learn maths. Speak English.</p>
-            <p className="mt-4 max-w-xl text-base text-ink-2 sm:text-lg">
-              Lớp Song Ngữ giúp thầy cô dạy trực tiếp trên tivi, học sinh trả lời bằng điện thoại, và mọi kết quả được lưu
-              lại để theo dõi tiến bộ của từng em.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href="/s/login" className={buttonVariants({ variant: "sun", size: "xl" })}>
-                Em là học sinh — Vào lớp <ArrowRight />
-              </Link>
-              <Link href="/login" className={buttonVariants({ variant: "outline", size: "xl" })}>
-                Thầy cô đăng nhập
-              </Link>
-            </div>
-            <div className="mt-8 flex items-center gap-5 text-sm font-semibold text-ink-2">
-              <span className="flex items-center gap-1.5">
-                <Users className="size-4 text-teal" /> Không cần email cho học sinh
-              </span>
-              <span className="hidden items-center gap-1.5 sm:flex">
-                <BellRing className="size-4 text-coral" /> Nhắc chú ý 1 chạm
-              </span>
-            </div>
+    <div className="space-y-8">
+      {/* Lời chào + mục tiêu ngày */}
+      <section className="card-lsn relative overflow-hidden bg-ink p-5 text-white sm:p-7">
+        <div className="relative z-10 flex flex-wrap items-center gap-5">
+          <Tam mood={today >= DAILY_GOAL ? "cheer" : "happy"} className="size-20 shrink-0" />
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold text-white/70">Toán 8 · Bilingual Math</p>
+            {editName ? (
+              <form
+                className="mt-1 flex gap-2"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const v = String(new FormData(e.currentTarget).get("name") ?? "").trim().slice(0, 30);
+                  update((s) => ({ ...s, name: v }));
+                  setEditName(false);
+                }}
+              >
+                <input name="name" defaultValue={p.name} autoFocus maxLength={30} placeholder="Tên gọi của em" aria-label="Tên gọi" className="h-11 min-w-0 flex-1 rounded-xl bg-white/10 px-3 font-bold text-white outline-none placeholder:text-white/50 focus:bg-white/20" />
+                <button className="h-11 rounded-xl bg-sun px-4 font-bold text-ink">Lưu</button>
+              </form>
+            ) : (
+              <h1 className="mt-1 flex items-center gap-2 text-3xl font-extrabold">
+                Chào {p.name || "em"}!
+                <button onClick={() => setEditName(true)} className="grid size-8 place-items-center rounded-lg text-white/60 hover:bg-white/10 hover:text-white" aria-label="Đổi tên gọi" title="Đổi tên gọi (chỉ lưu trên máy này)">
+                  <Pencil className="size-4" />
+                </button>
+              </h1>
+            )}
+            <p className="mt-1 text-white/80">{started ? "Hôm nay mình học tiếp nhé." : "Bắt đầu với bài Tứ giác nhé — chỉ 10 phút mỗi ngày."}</p>
           </div>
-
-          {/* Mô phỏng tivi + điện thoại */}
-          <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
-            <div className="rounded-[28px] bg-ink-tv p-3 shadow-[0_30px_60px_-20px_rgba(28,27,58,.55)] ring-1 ring-white/10">
-              <div className="rounded-[20px] bg-gradient-to-b from-[#232259] to-ink-tv p-5 font-present sm:p-7">
-                <div className="flex items-center justify-between text-white/70">
-                  <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">Câu 3 / 8</span>
-                  <span className="flex items-center gap-2 text-xs font-semibold">
-                    <span className="flex gap-1">
-                      {Array.from({ length: 10 }).map((_, i) => (
-                        <span key={i} className={cn("size-1.5 rounded-full", i < 7 ? "bg-sun" : "bg-white/20")} />
-                      ))}
-                    </span>
-                    21/30
-                  </span>
-                </div>
-                <p className="mt-5 text-xl leading-snug font-semibold text-white sm:text-2xl">
-                  An isosceles triangle has two equal <span className="rounded-md bg-sun px-1.5 text-ink">____</span>.
-                </p>
-                <p className="mt-1.5 text-sm text-white/55 italic">Tam giác cân có hai ____ bằng nhau.</p>
-                <div className="mt-5 grid grid-cols-2 gap-2.5 sm:gap-3">
-                  {ANSWERS.map((a) => {
-                    const c = SHAPE_COLORS[a.kind];
-                    return (
-                      <div
-                        key={a.kind}
-                        className="flex items-center gap-2.5 rounded-2xl px-3.5 py-3 font-semibold sm:py-4"
-                        style={{ background: c.bg, color: c.text, boxShadow: `0 5px 0 ${c.dk}` }}
-                      >
-                        <ShapeIcon kind={a.kind} color={c.text} className="size-5 opacity-90" />
-                        {a.en}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-            <div className="mx-auto h-4 w-28 rounded-b-xl bg-ink-tv/80" />
-
-            {/* Điện thoại HS + thẻ laptop GV, nằm dưới tivi để không che nội dung */}
-            <div className="relative z-10 -mt-10 flex items-end justify-between gap-4 px-2 sm:px-6">
-              <div className="w-[160px] rotate-[-5deg] rounded-[30px] bg-ink p-2 shadow-2xl sm:w-[180px]">
-                <div className="flex flex-col items-center rounded-[24px] bg-success-bg px-3 pt-4 pb-4 text-center">
-                  <Tam mood="cheer" className="size-14" />
-                  <p className="mt-1 font-display text-lg font-extrabold text-success-fg">Correct!</p>
-                  <p className="text-vi text-xs">Chính xác!</p>
-                  <p className="mt-2 rounded-full bg-white px-3 py-1 font-display text-sm font-extrabold text-ink shadow-[0_3px_0_#cfeee0]">
-                    +142 XP
-                  </p>
-                </div>
-              </div>
-
-              <div className="hidden w-56 rotate-[3deg] rounded-2xl border-2 border-line bg-white p-3 shadow-xl sm:block">
-                <p className="text-xs font-bold text-ink-2">Lớp 7A · đang học</p>
-                <div className="mt-2 space-y-1.5 text-xs font-semibold">
-                  <p className="flex items-center justify-between rounded-lg bg-teal-soft px-2 py-1 text-[#0A6F5F]">
-                    Đang theo dõi <b>24</b>
-                  </p>
-                  <p className="flex items-center justify-between rounded-lg bg-blue-soft px-2 py-1 text-blue-dk">
-                    Đã trả lời <b>21</b>
-                  </p>
-                  <p className="flex items-center justify-between rounded-lg bg-coral-soft px-2 py-1 text-[#A3301B]">
-                    Rời trang <b>2</b>
-                  </p>
-                </div>
+          <div className="flex items-center gap-3 rounded-2xl bg-white/10 p-3">
+            <Ring value={today / DAILY_GOAL} color="var(--color-sun)" size={68}>
+              <span className="font-display text-sm font-extrabold">{Math.min(100, Math.round((today / DAILY_GOAL) * 100))}%</span>
+            </Ring>
+            <div className="text-sm">
+              <div className="font-bold">Mục tiêu ngày</div>
+              <div className="text-white/70">
+                {today}/{DAILY_GOAL} XP
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Tính năng */}
-      <section className="relative border-t-2 border-line bg-white">
-        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-extrabold sm:text-4xl">Dạy song ngữ, nhẹ như một cú bấm</h2>
-            <p className="text-en mt-2 font-display text-lg font-semibold">Built for real classrooms — TV, laptop and phones.</p>
+      {/* Học tiếp + Ôn tập */}
+      <section className="grid gap-4 md:grid-cols-[1.4fr_1fr]">
+        <Link href={`/hoc/${next.slug}/${step}`} className="card-lsn group flex items-center gap-4 p-5 transition-transform hover:-translate-y-0.5">
+          <span className="grid size-14 shrink-0 place-items-center rounded-2xl" style={{ background: STEP_INFO[step].bg, color: STEP_INFO[step].fg }}>
+            {(() => {
+              const I = STEP_INFO[step].icon;
+              return <I className="size-7" />;
+            })()}
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="text-xs font-extrabold tracking-wide text-ink-2 uppercase">Học tiếp</div>
+            <div className="truncate font-display text-xl font-extrabold">{next.title.vi}</div>
+            <div className="text-sm text-ink-2">
+              Bước: {STEP_INFO[step].label.vi} · <span className="text-en">{STEP_INFO[step].label.en}</span>
+            </div>
           </div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {FEATURES.map((f) => (
-              <div key={f.title} className="card-lsn group p-5 transition-transform hover:-translate-y-1">
-                <span className={cn("inline-flex size-12 items-center justify-center rounded-2xl text-white shadow-[inset_0_-4px_0_rgba(0,0,0,.18)]", f.color)}>
-                  <f.icon className={cn("size-6", f.color === "bg-sun" && "text-ink")} />
-                </span>
-                <h3 className="mt-4 text-lg font-bold">{f.title}</h3>
-                <p className="text-en text-sm font-semibold">{f.en}</p>
-                <p className="mt-2 text-sm text-ink-2">{f.text}</p>
-              </div>
-            ))}
+          <span className={buttonVariants({ size: "icon-lg" })}>
+            <ArrowRight />
+          </span>
+        </Link>
+        <Link href="/on-tap" className="card-lsn flex items-center gap-4 p-5 transition-transform hover:-translate-y-0.5">
+          <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-sun-soft text-[#8A5A00]">
+            <Repeat2 className="size-7" />
+          </span>
+          <div className="flex-1">
+            <div className="text-xs font-extrabold tracking-wide text-ink-2 uppercase">Ôn tập thông minh</div>
+            <div className="font-display text-xl font-extrabold">{toReview ? `${toReview} việc cần ôn` : "Chưa có gì cần ôn"}</div>
+            <div className="text-sm text-ink-2">Thẻ từ đến hạn + sổ lỗi sai</div>
           </div>
-        </div>
+        </Link>
       </section>
 
-      {/* Kêu gọi */}
-      <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
-        <div className="relative overflow-hidden rounded-[28px] bg-ink px-6 py-10 text-white sm:px-12">
-          <FloatingShapes tone="dark" />
-          <div className="relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-            <div className="flex items-center gap-5">
-              <Tam mood="happy" className="hidden size-24 shrink-0 sm:block" />
-              <div>
-                <h2 className="text-2xl font-extrabold sm:text-3xl">Sẵn sàng cho tiết học đầu tiên?</h2>
-                <p className="mt-1 text-white/70">Tạo lớp, dán danh sách từ Excel, in phiếu PIN — chưa tới 5 phút.</p>
-              </div>
-            </div>
-            <Link href="/login" className={buttonVariants({ variant: "sun", size: "lg" })}>
-              Bắt đầu ngay <ChevronRight />
+      {/* Lộ trình chủ đề */}
+      <section>
+        <SectionTitle
+          action={
+            <Link href="/hoc" className="text-sm font-bold text-blue hover:underline">
+              Xem cả chương trình
             </Link>
-          </div>
+          }
+        >
+          Chủ đề: Tứ giác · Quadrilaterals
+        </SectionTitle>
+        <div className="grid gap-3 md:grid-cols-3">
+          {LESSONS.map((l, i) => (
+            <LessonCard key={l.id} lesson={l} index={i} prog={p.lessons[l.id]} />
+          ))}
         </div>
       </section>
 
-      <footer className="border-t-2 border-line py-6 text-center text-sm text-ink-2">
-        © {new Date().getFullYear()} Lớp Song Ngữ · Dạy và học Toán song ngữ cho THCS
-      </footer>
-    </main>
+      {/* Câu tiếng Anh hôm nay */}
+      <section className="card-lsn flex flex-wrap items-center gap-4 p-5">
+        <Sparkles className="size-6 shrink-0 text-sun-dk" />
+        <div className="min-w-0 flex-1">
+          <div className="text-xs font-extrabold tracking-wide text-ink-2 uppercase">Câu tiếng Anh hôm nay</div>
+          <T v={{ en: daily.en, vi: daily.vi }} block strong className="text-lg" />
+        </div>
+        <SayButtons text={daily.en} />
+      </section>
+    </div>
   );
 }

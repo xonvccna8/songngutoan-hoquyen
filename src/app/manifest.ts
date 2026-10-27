@@ -1,12 +1,12 @@
-// GĐ 7 — PWA: cài web như ứng dụng (bắt buộc trên iPhone để nhận thông báo khi tắt màn hình)
+// PWA: cài web như ứng dụng trên điện thoại / máy tính
 import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/",
-    name: "Lớp Song Ngữ — Toán song ngữ THCS",
-    short_name: "Lớp Song Ngữ",
-    description: "Dạy và học Toán song ngữ Việt – Anh cho THCS",
+    name: "Toán 8 Song Ngữ — Bilingual Math Grade 8",
+    short_name: "Toán 8",
+    description: "Tự học Toán lớp 8 song ngữ Việt – Anh",
     lang: "vi",
     start_url: "/",
     scope: "/",
@@ -21,8 +21,8 @@ export default function manifest(): MetadataRoute.Manifest {
       { src: "/icons/maskable", sizes: "512x512", type: "image/png", purpose: "maskable" },
     ],
     shortcuts: [
-      { name: "Học sinh vào lớp", short_name: "Vào lớp", url: "/s", icons: [{ src: "/icons/192", sizes: "192x192" }] },
-      { name: "Giáo viên", short_name: "Giáo viên", url: "/teacher", icons: [{ src: "/icons/192", sizes: "192x192" }] },
+      { name: "Học tiếp", short_name: "Học", url: "/hoc", icons: [{ src: "/icons/192", sizes: "192x192" }] },
+      { name: "Ôn tập", short_name: "Ôn tập", url: "/on-tap", icons: [{ src: "/icons/192", sizes: "192x192" }] },
     ],
   };
 }
