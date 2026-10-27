@@ -116,7 +116,7 @@ export default function Home() {
             </Link>
           }
         >
-          Chủ đề: Tứ giác · Quadrilaterals
+          Chương III: Tứ giác · Quadrilaterals
         </SectionTitle>
         <div className="grid gap-3 md:grid-cols-3">
           {LESSONS.map((l, i) => (

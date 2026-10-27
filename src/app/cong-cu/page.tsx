@@ -21,7 +21,8 @@ const plain = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(
 export default function ToolsPage() {
   const [tab, setTab] = useState<(typeof TABS)[number]["id"]>("tom-tat");
   const [q, setQ] = useState("");
-  const terms = ALL_TERMS.filter((t) => !q.trim() || norm(t.en).includes(norm(q)) || plain(t.vi).includes(plain(q)));
+  // Bỏ từ trùng giữa các bài (giữ lần xuất hiện đầu)
+  const terms = ALL_TERMS.filter((t, i) => ALL_TERMS.findIndex((x) => x.en === t.en) === i).filter((t) => !q.trim() || norm(t.en).includes(norm(q)) || plain(t.vi).includes(plain(q)));
 
   return (
     <div className="space-y-5">

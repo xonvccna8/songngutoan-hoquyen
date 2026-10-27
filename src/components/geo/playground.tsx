@@ -2,13 +2,15 @@
 
 // Hình kéo thả: em kéo các đỉnh để tự khám phá tính chất
 //  quad — tứ giác bất kì: tổng 4 góc luôn 360°
+//  trap — hình thang cân (kéo B, A đối xứng theo): góc kề đáy, cạnh bên, đường chéo bằng nhau
 //  para — hình bình hành (kéo A, B, D; C tự đi theo): cạnh đối, góc đối, đường chéo
 //  rect — hình chữ nhật (kéo C): hai đường chéo bằng nhau, OA = OB = OC = OD
+//  rhomb — hình thoi (kéo A, B = kéo nửa hai đường chéo): bốn cạnh bằng nhau, đường chéo vuông góc; hai đường chéo bằng nhau → hình vuông
 import { useRef, useState } from "react";
 import { Hand, RotateCcw } from "lucide-react";
 import { T } from "@/components/lang";
 import { STROKE } from "@/components/geo/figure";
-import { bi, PARA, QUAD, RECT, vn } from "@/lib/content/helpers";
+import { bi, PARA, QUAD, RECT, RHOMB, TRAP, vn } from "@/lib/content/helpers";
 import type { PlayMode } from "@/lib/content/types";
 
 type P = [number, number];
@@ -40,8 +42,10 @@ const START: Record<PlayMode, Pts> = {
   quad: { A: QUAD.A, B: QUAD.B, C: QUAD.C, D: QUAD.D },
   para: { A: PARA.A, B: PARA.B, D: PARA.D },
   rect: { C: RECT.C },
+  trap: { B: TRAP.B },
+  rhomb: { A: RHOMB.A, B: RHOMB.B },
 };
-const DRAG: Record<PlayMode, string[]> = { quad: ["A", "B", "C", "D"], para: ["A", "B", "D"], rect: ["C"] };
+const DRAG: Record<PlayMode, string[]> = { quad: ["A", "B", "C", "D"], trap: ["B"], para: ["A", "B", "D"], rect: ["C"], rhomb: ["A", "B"] };
 
 /** Tính đủ 4 đỉnh (+ O) từ các điểm đang kéo */
 function full(mode: PlayMode, p: Pts): Pts {
@@ -50,12 +54,36 @@ function full(mode: PlayMode, p: Pts): Pts {
     const C: P = [p.B[0] + p.D[0] - p.A[0], p.B[1] + p.D[1] - p.A[1]];
     return { ...p, C, O: [(p.A[0] + C[0]) / 2, (p.A[1] + C[1]) / 2] };
   }
+  const mid = (a: P, b: P): P => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  if (mode === "trap") {
+    // A đối xứng với B qua trục dọc x = 150 (trục đối xứng của hình thang cân)
+    const A: P = [300 - p.B[0], p.B[1]];
+    const C = TRAP.C,
+      D = TRAP.D;
+    return { A, B: p.B, C, D, O: lineCross(A, C, p.B, D) };
+  }
+  if (mode === "rhomb") {
+    const O = RHOMB.O,
+      a = O[1] - p.A[1],
+      b = p.B[0] - O[0];
+    return { A: [O[0], O[1] - a], B: [O[0] + b, O[1]], C: [O[0], O[1] + a], D: [O[0] - b, O[1]], O };
+  }
   const A = RECT.A,
     C = p.C;
-  return { A, B: [C[0], A[1]], C, D: [A[0], C[1]], O: [(A[0] + C[0]) / 2, (A[1] + C[1]) / 2] };
+  return { A, B: [C[0], A[1]], C, D: [A[0], C[1]], O: mid(A, C) };
 }
 
-const clampPt = (mode: PlayMode, x: number, y: number): P => {
+/** Giao điểm hai đường thẳng PQ và RS */
+function lineCross(p: P, q: P, r: P, s: P): P {
+  const d = (p[0] - q[0]) * (r[1] - s[1]) - (p[1] - q[1]) * (r[0] - s[0]) || 1;
+  const t = ((p[0] - r[0]) * (r[1] - s[1]) - (p[1] - r[1]) * (r[0] - s[0])) / d;
+  return [p[0] + t * (q[0] - p[0]), p[1] + t * (q[1] - p[1])];
+}
+
+const clampPt = (mode: PlayMode, k: string, x: number, y: number): P => {
+  if (mode === "trap") return [Math.max(160, Math.min(255, x)), Math.max(15, Math.min(140, y))];
+  // Hình thoi: A chỉ đi dọc, B chỉ đi ngang (giữ hai đường chéo vuông góc)
+  if (mode === "rhomb") return k === "A" ? [RHOMB.O[0], Math.max(15, Math.min(85, y))] : [Math.max(165, Math.min(290, x)), RHOMB.O[1]];
   if (mode === "rect") return [Math.max(110, Math.min(290, x)), Math.max(80, Math.min(190, y))];
   return [Math.max(5, Math.min(295, x)), Math.max(5, Math.min(195, y))];
 };
@@ -74,7 +102,7 @@ export function Playground({ mode }: { mode: PlayMode }) {
     const r = svg.current.getBoundingClientRect();
     const x = ((e.clientX - r.left) / r.width) * 340 - 20;
     const y = ((e.clientY - r.top) / r.height) * 240 - 20;
-    setPts((p) => ({ ...p, [drag]: clampPt(mode, x, y) }));
+    setPts((p) => ({ ...p, [drag]: clampPt(mode, drag, x, y) }));
   };
 
   // Nhãn đỉnh đặt ra phía ngoài tâm hình
@@ -91,9 +119,9 @@ export function Playground({ mode }: { mode: PlayMode }) {
     <div className="card-lsn overflow-hidden">
       <div className="flex items-center justify-between gap-2 border-b-2 border-line bg-sun-soft px-4 py-2 text-sm font-bold text-[#8A5A00]">
         <span className="inline-flex items-center gap-2">
-          <Hand className="size-4" /> Kéo các chấm màu để thay đổi hình
+          <Hand className="size-4 shrink-0" /> Kéo chấm vàng để đổi hình
         </span>
-        <button onClick={() => setPts(START[mode])} className="inline-flex h-8 items-center gap-1 rounded-lg px-2 hover:bg-white/60" aria-label="Đặt lại hình">
+        <button onClick={() => setPts(START[mode])} className="inline-flex h-8 shrink-0 items-center gap-1 rounded-lg px-2 whitespace-nowrap hover:bg-white/60" aria-label="Đặt lại hình">
           <RotateCcw className="size-4" /> Đặt lại
         </button>
       </div>
@@ -138,7 +166,10 @@ export function Playground({ mode }: { mode: PlayMode }) {
                     strokeWidth="3"
                     className="cursor-grab"
                     onPointerDown={(e) => {
-                      (e.target as Element).setPointerCapture?.(e.pointerId);
+                      // Giữ điểm đang kéo kể cả khi ngón tay trượt ra ngoài chấm (một số trình duyệt không cho → bỏ qua)
+                      try {
+                        (e.target as Element).setPointerCapture?.(e.pointerId);
+                      } catch {}
                       setDrag(k);
                     }}
                     aria-label={`Kéo đỉnh ${k}`}
@@ -178,6 +209,28 @@ function readouts(mode: PlayMode, p: Pts, ang: number[], convex: boolean) {
     ];
   }
   const s = (a: string, b: string) => fmt(cm(p[a], p[b]));
+  if (mode === "trap") {
+    return [
+      { math: `∠C = ∠D = ${D}°`, ok: true, note: bi("Base angles are equal", "Hai góc kề đáy lớn bằng nhau") },
+      { math: `∠A = ∠B = ${A}°`, ok: true, note: bi(`Angles next to a leg are supplementary: ∠A + ∠D = ${A + D}°`, `Hai góc kề một cạnh bên bù nhau: ∠A + ∠D = ${A + D}°`) },
+      { math: `AD = BC = ${s("A", "D")}`, ok: true, note: bi("The legs are equal", "Hai cạnh bên bằng nhau") },
+      { math: `AC = BD = ${s("A", "C")}`, ok: true, note: bi("The diagonals are equal", "Hai đường chéo bằng nhau") },
+      { math: `AB = ${s("A", "B")} · CD = ${s("C", "D")}`, note: bi("AB ∥ CD (the two bases)", "AB ∥ CD (hai đáy)") },
+    ];
+  }
+  if (mode === "rhomb") {
+    const square = Math.abs(cm(p.A, p.C) - cm(p.B, p.D)) < 0.15;
+    const half = Math.round(angleAt(p.A, p.B, p.C));
+    return [
+      square
+        ? { math: "Đây là HÌNH VUÔNG!", ok: true, note: bi("Equal diagonals: the rhombus is now a square (∠A = 90°).", "Hai đường chéo bằng nhau: hình thoi trở thành hình vuông (∠A = 90°).") }
+        : { math: "Hình thoi ABCD", note: bi("Try making AC = BD …", "Thử kéo cho AC = BD xem điều gì xảy ra…") },
+      { math: `AB = BC = CD = DA = ${s("A", "B")}`, ok: true, note: bi("Four equal sides", "Bốn cạnh bằng nhau") },
+      { math: "AC ⊥ BD (∠AOB = 90°)", ok: true, note: bi("The diagonals are perpendicular", "Hai đường chéo vuông góc với nhau") },
+      { math: `∠BAC = ∠DAC = ${half}° (∠A = ${A}°)`, ok: true, note: bi("Each diagonal bisects the angles", "Đường chéo là đường phân giác của các góc") },
+      { math: `S = ${s("A", "C")} × ${s("B", "D")} : 2 = ${fmt((cm(p.A, p.C) * cm(p.B, p.D)) / 2)}`, note: bi("Area = half the product of the diagonals", "Diện tích = nửa tích hai đường chéo") },
+    ];
+  }
   if (mode === "para") {
     return [
       { math: `AB = CD = ${s("A", "B")}`, ok: true, note: bi("Opposite sides are equal", "Các cạnh đối bằng nhau") },

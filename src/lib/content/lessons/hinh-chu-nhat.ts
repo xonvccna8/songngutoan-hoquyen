@@ -328,6 +328,18 @@ export const HINH_CHU_NHAT: LessonContent = {
       hints: [bi("AB = 8 cm is extra information — do you need it?", "AB = 8 cm là dữ kiện thừa — em có cần dùng không?"), bi("BD = AC, and O is the midpoint of BD.", "BD = AC và O là trung điểm BD."), bi("OD = BD : 2 = 10 : 2 = 5 cm", "OD = BD : 2 = 10 : 2 = 5 cm")],
       explain: bi("BD = AC = 10 cm, so OD = 5 cm. AB was not needed!", "BD = AC = 10 cm nên OD = 5 cm. Không cần dùng AB!"),
     },
+    {
+      id: "p5",
+      type: "mcq",
+      level: 3,
+      skill: "math",
+      answer: 2,
+      prompt: bi("Challenge: rectangle ABCD has AB = BC. What special shape is ABCD?", "Thử thách: hình chữ nhật ABCD có AB = BC. ABCD là hình gì đặc biệt?"),
+      figure: rect({ points: { A: [90, 40], B: [210, 40], C: [210, 160], D: [90, 160] }, ticks: [["A", "B", 1], ["B", "C", 1]] }),
+      options: [bi("A parallelogram only", "Chỉ là hình bình hành"), bi("An isosceles trapezoid only", "Chỉ là hình thang cân"), bi("A square", "Hình vuông"), bi("A kite only", "Chỉ là cánh diều")],
+      hints: [bi("adjacent sides = hai cạnh kề", "AB và BC là hai cạnh kề."), bi("All four sides become equal: AB = BC = CD = DA.", "Khi đó cả bốn cạnh bằng nhau: AB = BC = CD = DA."), bi("Four right angles + four equal sides = square", "Bốn góc vuông + bốn cạnh bằng nhau = hình vuông")],
+      explain: bi("A rectangle with two equal adjacent sides is a square (see the lesson Rhombuses and squares).", "Hình chữ nhật có hai cạnh kề bằng nhau là hình vuông (xem bài Hình thoi và hình vuông)."),
+    },
   ],
   generators: [
     { level: 1, make: genDiag },

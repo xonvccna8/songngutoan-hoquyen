@@ -2,13 +2,15 @@
 import { bi, shuffle } from "@/lib/content/helpers";
 import { HINH_BINH_HANH } from "@/lib/content/lessons/hinh-binh-hanh";
 import { HINH_CHU_NHAT } from "@/lib/content/lessons/hinh-chu-nhat";
+import { HINH_THANG_CAN } from "@/lib/content/lessons/hinh-thang-can";
+import { HINH_THOI_HINH_VUONG } from "@/lib/content/lessons/hinh-thoi-hinh-vuong";
 import { TU_GIAC } from "@/lib/content/lessons/tu-giac";
 import type { Bi, LessonContent, Question, Term } from "@/lib/content/types";
 
 export * from "@/lib/content/types";
 
 /** Thứ tự học gợi ý. Thêm bài mới: tạo file trong lessons/ rồi thêm vào đây. */
-export const LESSONS: LessonContent[] = [TU_GIAC, HINH_BINH_HANH, HINH_CHU_NHAT];
+export const LESSONS: LessonContent[] = [TU_GIAC, HINH_THANG_CAN, HINH_BINH_HANH, HINH_CHU_NHAT, HINH_THOI_HINH_VUONG];
 
 export const lessonBySlug = (slug: string) => LESSONS.find((l) => l.slug === slug);
 export const lessonById = (id: string) => LESSONS.find((l) => l.id === id);
@@ -73,6 +75,8 @@ export const SYMBOLS: { sym: string; read: Bi }[] = [
   { sym: "ABCD", read: bi("quadrilateral A B C D", "tứ giác ABCD") },
   { sym: "AB ∥ CD", read: bi("A B is parallel to C D", "AB song song với CD") },
   { sym: "AB ⊥ AD", read: bi("A B is perpendicular to A D", "AB vuông góc với AD") },
+  { sym: "AC ⊥ BD", read: bi("A C is perpendicular to B D", "AC vuông góc với BD") },
+  { sym: "AB = BC = CD = DA", read: bi("all four sides are equal", "bốn cạnh bằng nhau") },
   { sym: "AB = CD", read: bi("A B equals C D", "AB bằng CD") },
   { sym: "∠A = 90°", read: bi("angle A equals 90 degrees", "góc A bằng 90 độ") },
   { sym: "∠A + ∠B = 180°", read: bi("angle A plus angle B equals 180 degrees", "góc A cộng góc B bằng 180 độ") },
@@ -80,6 +84,8 @@ export const SYMBOLS: { sym: string; read: Bi }[] = [
   { sym: "O ∈ AC", read: bi("O lies on A C", "O thuộc AC") },
   { sym: "AM = BC : 2", read: bi("A M equals B C divided by 2 (half of B C)", "AM bằng BC chia 2 (nửa BC)") },
   { sym: "S = a × b", read: bi("S equals a times b", "S bằng a nhân b") },
+  { sym: "S = AC × BD : 2", read: bi("S equals A C times B D divided by 2", "S bằng AC nhân BD chia 2") },
+  { sym: "a²", read: bi("a squared", "a bình phương") },
   { sym: "8 cm²", read: bi("8 square centimetres", "8 xăng-ti-mét vuông") },
   { sym: "⇔", read: bi("if and only if", "khi và chỉ khi") },
   { sym: "⇒", read: bi("implies / so", "suy ra") },

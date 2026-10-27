@@ -4,8 +4,8 @@
 |---|---|---|
 | A | Bỏ phần giáo viên / quản trị / Firebase; khung web học sinh lưu trên máy; 5 bước học; ôn tập; công cụ; trang Của em; PWA ngoại tuyến | Xong (27/10/2026) |
 | B | Nội dung chủ đề **Tứ giác – Hình bình hành – Hình chữ nhật** (bài 10, 12, 13) | Xong (27/10/2026) |
-| C | Hoàn thiện Chương III: Hình thang cân (bài 11), Hình thoi và hình vuông (bài 14) + hình kéo thả tương ứng | Tiếp theo |
-| D | Chương I–II: Đa thức, Hằng đẳng thức (nhiều bộ sinh câu Đại số) | Sau |
+| C | Hoàn thiện Chương III: Hình thang cân (bài 11), Hình thoi và hình vuông (bài 14) + hình kéo thả tương ứng | Xong (27/10/2026) |
+| D | Chương I–II: Đa thức, Hằng đẳng thức (nhiều bộ sinh câu Đại số) | Tiếp theo |
 | E | Các chương còn lại; đề ôn giữa kì / cuối kì tổng hợp nhiều bài | Sau |
 | F | Deploy Vercel, thử trên điện thoại thật, README hoàn chỉnh | Khi sẵn sàng |
 

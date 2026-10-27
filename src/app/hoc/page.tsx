@@ -17,7 +17,7 @@ export default function MapPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-extrabold">Bản đồ học Toán 8</h1>
-        <p className="mt-1 text-ink-2">Sách Kết nối tri thức · 10 chương. Hiện đã có chủ đề <b>Tứ giác – Hình bình hành – Hình chữ nhật</b>; các bài khác sẽ được thêm dần.</p>
+        <p className="mt-1 text-ink-2">Sách Kết nối tri thức · 10 chương. Hiện đã có đủ 5 bài của <b>Chương III Tứ giác</b>; các chương khác sẽ được thêm dần.</p>
       </div>
       <div className="space-y-4">
         {chaptersOf(8).map((ch) => {

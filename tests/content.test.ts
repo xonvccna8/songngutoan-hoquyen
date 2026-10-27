@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildQuiz, LESSONS, nextPractice, termQuestion } from "@/lib/content";
+import { buildQuiz, LESSONS, lessonBySlug, nextPractice, termQuestion } from "@/lib/content";
 import { answerText, checkAnswer, parseNum, seeded } from "@/lib/content/helpers";
 import type { Question } from "@/lib/content/types";
 import { curLesson } from "@/lib/curriculum";
@@ -49,12 +49,31 @@ describe("nội dung bài học", () => {
 
   it("góc trong câu tự sinh của bài Tứ giác có tổng 360°", () => {
     const r = seeded(7);
-    const g = LESSONS[0].generators[0];
+    const g = lessonBySlug("tu-giac")!.generators[0];
     for (let i = 0; i < 200; i++) {
       const q = g.make(r);
       const nums = [...q.prompt.en.matchAll(/(\d+)°/g)].map((m) => +m[1]);
       expect(nums.reduce((a, b) => a + b, 0) + (q as { answer: number }).answer).toBe(360);
     }
+  });
+
+  it("đủ 5 bài Chương III theo thứ tự SGK, thuật ngữ không trùng mã giữa các bài", () => {
+    expect(LESSONS.map((l) => l.id)).toEqual(["k8-10", "k8-11", "k8-12", "k8-13", "k8-14"]);
+    const ids = LESSONS.flatMap((l) => l.terms.map((t) => t.id));
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("góc kề đáy hình thang cân và góc trong hình thoi luôn hợp lí (0° < góc < 180°)", () => {
+    const r = seeded(11);
+    for (const slug of ["hinh-thang-can", "hinh-thoi-hinh-vuong"])
+      for (const g of lessonBySlug(slug)!.generators)
+        for (let i = 0; i < 200; i++) {
+          const q = g.make(r);
+          if (q.type === "number" && q.unit === "°") {
+            expect(q.answer).toBeGreaterThan(0);
+            expect(q.answer).toBeLessThan(180);
+          }
+        }
   });
 
   it("đề kiểm tra có 5 câu, không trùng", () => {
@@ -66,7 +85,7 @@ describe("nội dung bài học", () => {
   });
 
   it("luyện tập: dùng hết câu soạn sẵn rồi mới sinh câu mới", () => {
-    const l = LESSONS[1];
+    const l = lessonBySlug("hinh-binh-hanh")!;
     const seen = new Set<string>();
     const first = nextPractice(l, 1, seen);
     expect(l.practice.some((q) => q.id === first.id)).toBe(true);
@@ -75,7 +94,7 @@ describe("nội dung bài học", () => {
   });
 
   it("câu thuật ngữ có đúng 1 đáp án", () => {
-    const l = LESSONS[2];
+    const l = lessonBySlug("hinh-chu-nhat")!;
     for (const t of l.terms) {
       const q = termQuestion(l, seeded(1), t);
       validate(q);
@@ -93,7 +112,7 @@ describe("chấm câu trả lời", () => {
     expect(parseNum("abc")).toBeNull();
   });
   it("gõ thuật ngữ cho phép sai chính tả nhẹ", () => {
-    const q = LESSONS[1].practice[0];
+    const q = lessonBySlug("hinh-binh-hanh")!.practice[0];
     expect(checkAnswer(q, "Parallelogram")).toBe(true);
     expect(checkAnswer(q, "paralelogram")).toBe(true);
     expect(checkAnswer(q, "rectangle")).toBe(false);

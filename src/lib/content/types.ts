@@ -62,7 +62,7 @@ export type Block =
   | { kind: "example"; problem: Bi; figure?: FigureSpec; steps: Bi[] }
   | { kind: "check"; question: Question };
 
-export type PlayMode = "quad" | "para" | "rect";
+export type PlayMode = "quad" | "trap" | "para" | "rect" | "rhomb";
 
 export interface Section {
   id: string;

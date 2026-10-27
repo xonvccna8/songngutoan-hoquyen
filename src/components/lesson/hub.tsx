@@ -7,7 +7,7 @@ import { cn } from "cn";
 import { BackLink, Ring, Stars } from "@/components/common";
 import { T } from "@/components/lang";
 import { lessonBySlug } from "@/lib/content";
-import { curLesson } from "@/lib/curriculum";
+import { chapterOf, curLesson } from "@/lib/curriculum";
 import { lessonDone, nextStep, starsOf, STEPS } from "@/lib/progress/logic";
 import { STEP_INFO } from "@/lib/progress/steps";
 import { useProgress } from "@/lib/progress/store";
@@ -18,13 +18,15 @@ export function LessonHub({ slug }: { slug: string }) {
   const prog = p.lessons[l.id];
   const next = nextStep(prog);
   const cur = curLesson(l.id);
+  const ch = chapterOf(l.id);
+  const ROMAN = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 
   return (
     <div className="space-y-6">
       <BackLink href="/hoc">Bản đồ học</BackLink>
       <section className="card-lsn flex flex-wrap items-center gap-5 p-5 sm:p-6">
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold text-ink-2">Bài {cur?.no} · Chương III Tứ giác</p>
+          <p className="text-sm font-bold text-ink-2">Bài {cur?.no} · Chương {ROMAN[ch?.no ?? 0]} {ch?.vi}</p>
           <h1 className="mt-1 text-3xl font-extrabold">{l.title.vi}</h1>
           <p className="text-en text-lg font-semibold">{l.title.en}</p>
           <T v={l.intro} block className="mt-3" />

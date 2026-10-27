@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { LESSONS } from "@/lib/content";
+import { lessonBySlug } from "@/lib/content";
 import {
   badges,
   completeStep,
@@ -21,7 +21,7 @@ import { dueCards, review } from "@/lib/progress/srs";
 
 const NOW = new Date(2026, 9, 27, 15, 0).getTime();
 const DAY = 86_400_000;
-const L = LESSONS[1];
+const L = lessonBySlug("hinh-binh-hanh")!;
 const Q = L.practice[1];
 
 describe("tiến độ", () => {
