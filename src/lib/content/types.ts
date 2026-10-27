@@ -31,6 +31,21 @@ export interface FigureSpec {
   dots?: string[];
 }
 
+/** Biểu đồ số liệu (Chương V): cột (một hoặc nhiều dãy), đoạn thẳng, hình quạt tròn */
+export interface ChartSpec {
+  kind: "bar" | "line" | "pie";
+  title: Bi;
+  /** Nhãn trục ngang (cột, đoạn thẳng) hoặc tên từng phần (hình quạt) */
+  categories: string[];
+  series: { name: Bi; values: number[] }[];
+  /** Đơn vị ghi cạnh số, ví dụ "%" hoặc " HS" */
+  unit?: string;
+  /** Ghi số trên cột/điểm (mặc định có). Tắt khi câu hỏi yêu cầu đọc số trên trục. */
+  showValues?: boolean;
+  /** Trục dọc bắt đầu từ số này thay vì 0 (dùng cho câu “biểu đồ gây hiểu lầm”) */
+  yMin?: number;
+}
+
 export interface QBase {
   id: string;
   /** 1 Nhận biết · 2 Thông hiểu · 3 Vận dụng */
@@ -39,6 +54,7 @@ export interface QBase {
   skill: "math" | "lang";
   prompt: Bi;
   figure?: FigureSpec;
+  chart?: ChartSpec;
   /** Gợi ý 3 tầng: từ vựng → cách làm → lời giải */
   hints: [Bi, Bi, Bi];
   /** Giải thích hiện sau khi trả lời */
@@ -63,13 +79,14 @@ export type Block =
   | { kind: "key"; tag: Bi; text: Bi; tone?: "blue" | "teal" | "sun" | "coral" }
   | { kind: "list"; tag?: Bi; items: Bi[] }
   | { kind: "figure"; figure: FigureSpec; caption?: Bi }
+  | { kind: "chart"; chart: ChartSpec; caption?: Bi }
   | { kind: "play"; mode: PlayMode }
   /** Mô hình diện tích cho hằng đẳng thức: (a + b)² hoặc a² − b² */
   | { kind: "area"; variant: "sum" | "diff" }
   | { kind: "example"; problem: Bi; figure?: FigureSpec; steps: Bi[] }
   | { kind: "check"; question: Question };
 
-export type PlayMode = "quad" | "trap" | "para" | "rect" | "rhomb";
+export type PlayMode = "quad" | "trap" | "para" | "rect" | "rhomb" | "thales";
 
 export interface Section {
   id: string;

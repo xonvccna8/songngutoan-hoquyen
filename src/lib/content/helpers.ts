@@ -34,6 +34,10 @@ export const RIGHT_TRAP: FigureSpec["points"] = { A: [60, 40], B: [180, 40], C: 
 export const RHOMB: FigureSpec["points"] = { A: [150, 15], B: [265, 100], C: [150, 185], D: [35, 100], O: [150, 100] };
 export const SQUARE: FigureSpec["points"] = { A: [90, 40], B: [210, 40], C: [210, 160], D: [90, 160], O: [150, 100] };
 export const RECT: FigureSpec["points"] = { A: [60, 40], B: [240, 40], C: [240, 160], D: [60, 160], O: [150, 100] };
+/** Tam giác ABC cho Thalès: D ∈ AB, E ∈ AC với AD/AB = AE/AC = 0,4; M, N là trung điểm AB, AC */
+export const THALES: FigureSpec["points"] = { A: [150, 18], B: [30, 182], C: [275, 182], D: [102, 83.6], E: [200, 83.6], M: [90, 100], N: [212.5, 100] };
+/** Tam giác ABC có phân giác AD (D ∈ BC, DB/DC = AB/AC) */
+export const BISECT: FigureSpec["points"] = { A: [110, 25], B: [30, 180], C: [280, 180], D: [138, 180] };
 /** Tam giác ABC vuông tại A, M là trung điểm cạnh huyền BC */
 export const RIGHT_TRI: FigureSpec["points"] = { A: [60, 165], B: [60, 35], C: [250, 165], M: [155, 100] };
 

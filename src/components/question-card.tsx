@@ -9,6 +9,7 @@ import { cn } from "cn";
 import { ShapeIcon, SHAPE_COLORS, type ShapeKind } from "@/components/brand/shapes";
 import { Tam } from "@/components/brand/tam";
 import { SayButtons } from "@/components/common";
+import { DataChart } from "@/components/data-chart";
 import { GeoFigure } from "@/components/geo/figure";
 import { T } from "@/components/lang";
 import { Button } from "@/components/ui/button";
@@ -69,6 +70,12 @@ export function QuestionCard({
         {q.figure && (
           <div className="flex justify-center rounded-2xl bg-paper p-2">
             <GeoFigure spec={q.figure} className="max-w-sm" />
+          </div>
+        )}
+
+        {q.chart && (
+          <div className="rounded-2xl bg-paper p-3">
+            <DataChart spec={q.chart} className="mx-auto max-w-md" />
           </div>
         )}
 

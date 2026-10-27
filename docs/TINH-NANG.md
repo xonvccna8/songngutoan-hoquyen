@@ -10,12 +10,12 @@ Lời chào (tên gọi tuỳ chọn, chỉ lưu trên máy) · vòng mục tiê
 
 ## §3. Một bài `/hoc/[bai]` — 5 bước
 1. **Từ vựng**: thẻ lật (EN + IPA + nghe thường/chậm → nghĩa VI + câu ví dụ), tự đánh giá Chưa nhớ/Khó/Nhớ/Dễ (ôn lặp ngắt quãng) + trò chơi nhanh 4 câu.
-2. **Hiểu bài**: từng phần: định nghĩa / định lí (khung màu, nghe được), danh sách, hình vẽ, **hình kéo thả** (tứ giác: tổng góc 360°; hình thang cân: góc kề đáy, cạnh bên, đường chéo; hình bình hành: cạnh, góc, đường chéo; hình chữ nhật: đường chéo bằng nhau; hình thoi: đường chéo vuông góc, kéo hai đường chéo bằng nhau → hình vuông; **mô hình diện tích** với thanh trượt a, b cho (a + b)² và a² − b²), ví dụ giải từng bước (em nghĩ trước rồi mới mở), câu kiểm tra nhanh.
+2. **Hiểu bài**: từng phần: định nghĩa / định lí (khung màu, nghe được), danh sách, hình vẽ, **hình kéo thả** (tứ giác: tổng góc 360°; hình thang cân: góc kề đáy, cạnh bên, đường chéo; hình bình hành: cạnh, góc, đường chéo; hình chữ nhật: đường chéo bằng nhau; Thalès: kéo D trên AB, DE ∥ BC, thấy các tỉ số bằng nhau và đường trung bình; hình thoi: đường chéo vuông góc, kéo hai đường chéo bằng nhau → hình vuông; **mô hình diện tích** với thanh trượt a, b cho (a + b)² và a² − b²), ví dụ giải từng bước (em nghĩ trước rồi mới mở), câu kiểm tra nhanh.
 3. **Luyện tập**: 3 mức (Nhận biết / Thông hiểu / Vận dụng); câu soạn sẵn trước, hết thì máy sinh câu mới không giới hạn; gợi ý 3 tầng (Từ vựng → Cách làm → Lời giải); đúng 6 câu là xong bước.
 4. **Luyện nói**: 5 câu Toán tiếng Anh; nghe mẫu → bấm micro → chấm từng từ (xanh / đỏ gạch sóng) và điểm 0–100; 3 câu ≥ 70 điểm là xong. Trình duyệt không hỗ trợ nhận giọng: tự xác nhận đã đọc.
 5. **Kiểm tra**: 5 câu (1 từ vựng + mức 1 + 2 câu mức 2 + mức 3); 3/5 qua bài, 4/5 = 2 sao, 5/5 = 3 sao.
 
-Kiểu câu hỏi: trắc nghiệm 4 ô (màu + hình), đúng/sai, nhập số (chấp nhận "6,5", "70°"; nút ± cho số âm), gõ thuật ngữ (cho sai chính tả nhẹ), **gõ biểu thức** (`src/lib/algebra/poly.ts`: gõ x^2, x2 hoặc x²; phím nhanh x y ² ³ ( ) + − ·; xem trước dạng đẹp; chấm theo giá trị + dạng yêu cầu: khai triển / thu gọn / dạng tích phân tích triệt để; sai dạng thì có lời nhắc). Mỗi câu gắn **mức** và **loại lỗi** (Toán / Ngôn ngữ).
+Câu hỏi có thể kèm **hình vẽ** hoặc **biểu đồ** (cột, cột kép, hình quạt tròn, đoạn thẳng; `src/components/data-chart.tsx`, bảng màu đã kiểm mù màu; có thể cắt trục dọc để luyện phát hiện biểu đồ gây hiểu lầm). Kiểu câu hỏi: trắc nghiệm 4 ô (màu + hình), đúng/sai, nhập số (chấp nhận "6,5", "70°"; nút ± cho số âm), gõ thuật ngữ (cho sai chính tả nhẹ), **gõ biểu thức** (`src/lib/algebra/poly.ts`: gõ x^2, x2 hoặc x²; phím nhanh x y ² ³ ( ) + − ·; xem trước dạng đẹp; chấm theo giá trị + dạng yêu cầu: khai triển / thu gọn / dạng tích phân tích triệt để; sai dạng thì có lời nhắc). Mỗi câu gắn **mức** và **loại lỗi** (Toán / Ngôn ngữ).
 
 ## §4. Ôn tập thông minh `/on-tap`
 - Thẻ từ đến hạn theo lịch SM-2 rút gọn.

@@ -7,7 +7,11 @@
 | C | Hoàn thiện Chương III: Hình thang cân (bài 11), Hình thoi và hình vuông (bài 14) + hình kéo thả tương ứng | Xong (27/10/2026) |
 | D1 | Bộ máy đa thức (đọc, rút gọn, chấm dạng) + câu gõ biểu thức + Chương I Đa thức (bài 1–5) | Xong (28/10/2026) |
 | D2 | Chương II Hằng đẳng thức (bài 6–9) + mô hình diện tích + bảng 7 hằng đẳng thức | Xong (28/10/2026) |
-| E | Các chương còn lại (IV Thalès, V Dữ liệu, VI Phân thức, VII Phương trình & hàm số, VIII Xác suất, IX Tam giác đồng dạng, X Hình khối); đề ôn giữa kì / cuối kì | Tiếp theo |
+| E1 | Chương IV Định lí Thalès (bài 15–17) + Chương V Dữ liệu và biểu đồ (bài 18–20); biểu đồ cột/quạt/đoạn thẳng trong câu hỏi; hình kéo thả Thalès | Xong (28/10/2026) |
+| E2 | Chương VI Phân thức đại số (bài 21–24): mở rộng bộ máy để chấm phân thức | Tiếp theo |
+| E3 | Chương VII Phương trình bậc nhất và hàm số bậc nhất (bài 25–29) + đồ thị kéo thả | Sau |
+| E4 | Chương VIII Xác suất, IX Tam giác đồng dạng, X Hình khối (bài 30–39) | Sau |
+| E5 | Đề ôn giữa kì / cuối kì tự sinh, có đồng hồ | Sau |
 | F | Deploy Vercel, thử trên điện thoại thật, README hoàn chỉnh | Khi sẵn sàng |
 
 ## Cách thêm một bài mới

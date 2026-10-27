@@ -13,6 +13,9 @@ import { STROKE } from "@/components/geo/figure";
 import { bi, PARA, QUAD, RECT, RHOMB, TRAP, vn } from "@/lib/content/helpers";
 import type { PlayMode } from "@/lib/content/types";
 
+/** Các chế độ dùng khung tứ giác (Thalès có thành phần riêng) */
+type QuadMode = Exclude<PlayMode, "thales">;
+
 type P = [number, number];
 type Pts = Record<string, P>;
 
@@ -38,17 +41,17 @@ function isConvex(ps: P[]) {
   return s.every((x) => x > 0) || s.every((x) => x < 0);
 }
 
-const START: Record<PlayMode, Pts> = {
+const START: Record<QuadMode, Pts> = {
   quad: { A: QUAD.A, B: QUAD.B, C: QUAD.C, D: QUAD.D },
   para: { A: PARA.A, B: PARA.B, D: PARA.D },
   rect: { C: RECT.C },
   trap: { B: TRAP.B },
   rhomb: { A: RHOMB.A, B: RHOMB.B },
 };
-const DRAG: Record<PlayMode, string[]> = { quad: ["A", "B", "C", "D"], trap: ["B"], para: ["A", "B", "D"], rect: ["C"], rhomb: ["A", "B"] };
+const DRAG: Record<QuadMode, string[]> = { quad: ["A", "B", "C", "D"], trap: ["B"], para: ["A", "B", "D"], rect: ["C"], rhomb: ["A", "B"] };
 
 /** Tính đủ 4 đỉnh (+ O) từ các điểm đang kéo */
-function full(mode: PlayMode, p: Pts): Pts {
+function full(mode: QuadMode, p: Pts): Pts {
   if (mode === "quad") return p;
   if (mode === "para") {
     const C: P = [p.B[0] + p.D[0] - p.A[0], p.B[1] + p.D[1] - p.A[1]];
@@ -80,7 +83,7 @@ function lineCross(p: P, q: P, r: P, s: P): P {
   return [p[0] + t * (q[0] - p[0]), p[1] + t * (q[1] - p[1])];
 }
 
-const clampPt = (mode: PlayMode, k: string, x: number, y: number): P => {
+const clampPt = (mode: QuadMode, k: string, x: number, y: number): P => {
   if (mode === "trap") return [Math.max(160, Math.min(255, x)), Math.max(15, Math.min(140, y))];
   // Hình thoi: A chỉ đi dọc, B chỉ đi ngang (giữ hai đường chéo vuông góc)
   if (mode === "rhomb") return k === "A" ? [RHOMB.O[0], Math.max(15, Math.min(85, y))] : [Math.max(165, Math.min(290, x)), RHOMB.O[1]];
@@ -88,7 +91,7 @@ const clampPt = (mode: PlayMode, k: string, x: number, y: number): P => {
   return [Math.max(5, Math.min(295, x)), Math.max(5, Math.min(195, y))];
 };
 
-export function Playground({ mode }: { mode: PlayMode }) {
+export function Playground({ mode }: { mode: QuadMode }) {
   const [pts, setPts] = useState<Pts>(START[mode]);
   const [drag, setDrag] = useState<string | null>(null);
   const svg = useRef<SVGSVGElement>(null);
@@ -194,7 +197,7 @@ export function Playground({ mode }: { mode: PlayMode }) {
   );
 }
 
-function readouts(mode: PlayMode, p: Pts, ang: number[], convex: boolean) {
+function readouts(mode: QuadMode, p: Pts, ang: number[], convex: boolean) {
   const A = Math.round(ang[0]),
     B = Math.round(ang[1]),
     C = Math.round(ang[2]),

@@ -6,8 +6,10 @@ import { ArrowLeft, ArrowRight, ChevronDown, Lightbulb } from "lucide-react";
 import { cn } from "cn";
 import { SayButtons } from "@/components/common";
 import { GeoFigure } from "@/components/geo/figure";
+import { DataChart } from "@/components/data-chart";
 import { AreaModel } from "@/components/geo/area-model";
 import { Playground } from "@/components/geo/playground";
+import { ThalesPlay } from "@/components/geo/thales-play";
 import { T } from "@/components/lang";
 import { StepDone } from "@/components/lesson/step-done";
 import { Progress } from "@/components/lesson/vocab";
@@ -119,8 +121,19 @@ function BlockView({ block: b, lessonId }: { block: Block; lessonId: string }) {
           )}
         </figure>
       );
+    case "chart":
+      return (
+        <figure className="card-lsn p-3">
+          <DataChart spec={b.chart} className="mx-auto max-w-md" />
+          {b.caption && (
+            <figcaption className="mt-1 text-center text-sm">
+              <T v={b.caption} />
+            </figcaption>
+          )}
+        </figure>
+      );
     case "play":
-      return <Playground mode={b.mode} />;
+      return b.mode === "thales" ? <ThalesPlay /> : <Playground mode={b.mode} />;
     case "area":
       return <AreaModel variant={b.variant} />;
     case "example":

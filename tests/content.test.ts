@@ -92,6 +92,34 @@ describe("nội dung bài học", () => {
         }
   });
 
+  it("biểu đồ trong câu tự sinh luôn hợp lệ (đủ số liệu, không âm)", () => {
+    const r = seeded(5);
+    for (const l of LESSONS)
+      for (const g of l.generators)
+        for (let i = 0; i < 100; i++) {
+          const c = g.make(r).chart;
+          if (!c) continue;
+          for (const s of c.series) {
+            expect(s.values).toHaveLength(c.categories.length);
+            s.values.forEach((v) => expect(v).toBeGreaterThanOrEqual(0));
+          }
+          expect(new Set(c.categories).size).toBe(c.categories.length);
+        }
+  });
+
+  it("bài phân giác chỉ sinh tam giác thật (bất đẳng thức tam giác)", () => {
+    const r = seeded(9);
+    for (const g of lessonBySlug("phan-giac")!.generators)
+      for (let i = 0; i < 200; i++) {
+        const nums = [...g.make(r).prompt.en.matchAll(/(AB|AC|BC|DB|DC) = (\d+)/g)].reduce<Record<string, number>>((m, x) => ({ ...m, [x[1]]: +x[2] }), {});
+        const BC = nums.BC ?? (nums.DB && nums.DC ? nums.DB + nums.DC : undefined);
+        if (nums.AB && nums.AC && BC) {
+          expect(BC).toBeLessThan(nums.AB + nums.AC);
+          expect(BC).toBeGreaterThan(Math.abs(nums.AB - nums.AC));
+        }
+      }
+  });
+
   it("đề kiểm tra có 5 câu, không trùng", () => {
     for (const l of LESSONS) {
       const quiz = buildQuiz(l, seeded(3));

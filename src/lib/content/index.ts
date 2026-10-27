@@ -3,15 +3,21 @@ import { bi, shuffle } from "@/lib/content/helpers";
 import { CHIA_DA_THUC } from "@/lib/content/lessons/chia-da-thuc";
 import { CONG_TRU_DA_THUC } from "@/lib/content/lessons/cong-tru-da-thuc";
 import { DA_THUC } from "@/lib/content/lessons/da-thuc";
+import { DINH_LI_THALES } from "@/lib/content/lessons/dinh-li-thales";
 import { DON_THUC } from "@/lib/content/lessons/don-thuc";
+import { DUONG_TRUNG_BINH } from "@/lib/content/lessons/duong-trung-binh";
 import { HINH_BINH_HANH } from "@/lib/content/lessons/hinh-binh-hanh";
 import { HINH_CHU_NHAT } from "@/lib/content/lessons/hinh-chu-nhat";
 import { HINH_THANG_CAN } from "@/lib/content/lessons/hinh-thang-can";
+import { BIEU_DO } from "@/lib/content/lessons/bieu-do";
 import { BINH_PHUONG } from "@/lib/content/lessons/binh-phuong";
 import { HINH_THOI_HINH_VUONG } from "@/lib/content/lessons/hinh-thoi-hinh-vuong";
 import { LAP_PHUONG } from "@/lib/content/lessons/lap-phuong";
 import { NHAN_DA_THUC } from "@/lib/content/lessons/nhan-da-thuc";
+import { PHAN_GIAC } from "@/lib/content/lessons/phan-giac";
+import { PHAN_TICH_DU_LIEU } from "@/lib/content/lessons/phan-tich-du-lieu";
 import { PHAN_TICH_NHAN_TU } from "@/lib/content/lessons/phan-tich-nhan-tu";
+import { THU_THAP_DU_LIEU } from "@/lib/content/lessons/thu-thap-du-lieu";
 import { TONG_HIEU_LAP_PHUONG } from "@/lib/content/lessons/tong-hieu-lap-phuong";
 import { TU_GIAC } from "@/lib/content/lessons/tu-giac";
 import type { Bi, LessonContent, Question, Term } from "@/lib/content/types";
@@ -37,6 +43,14 @@ export const LESSONS: LessonContent[] = [
   HINH_BINH_HANH,
   HINH_CHU_NHAT,
   HINH_THOI_HINH_VUONG,
+  // Chương IV. Định lí Thalès
+  DINH_LI_THALES,
+  DUONG_TRUNG_BINH,
+  PHAN_GIAC,
+  // Chương V. Dữ liệu và biểu đồ
+  THU_THAP_DU_LIEU,
+  BIEU_DO,
+  PHAN_TICH_DU_LIEU,
 ];
 
 export const lessonBySlug = (slug: string) => LESSONS.find((l) => l.slug === slug);
