@@ -5,7 +5,20 @@ import type { Question } from "@/lib/content/types";
 import { curLesson } from "@/lib/curriculum";
 
 /** Giá trị trả lời đúng của một câu (dạng chuỗi như ô nhập gửi lên) */
-const correctValue = (q: Question) => (q.type === "mcq" ? String(q.answer) : q.type === "tf" ? String(q.answer) : q.type === "number" ? String(q.answer).replace(".", ",") : q.accept[0]);
+function correctValue(q: Question): string {
+  switch (q.type) {
+    case "mcq":
+    case "tf":
+      return String(q.answer);
+    case "number":
+      // Số âm gõ bằng dấu trừ của máy (−) như trên điện thoại
+      return String(q.answer).replace(".", ",").replace("-", "−");
+    case "term":
+      return q.accept[0];
+    case "expr":
+      return q.answer;
+  }
+}
 
 function validate(q: Question) {
   expect(q.id).toBeTruthy();
@@ -18,8 +31,8 @@ function validate(q: Question) {
   }
   if (q.type === "number") {
     expect(Number.isFinite(q.answer)).toBe(true);
-    expect(q.answer).toBeGreaterThan(0);
   }
+  if (q.type === "number" && q.unit) expect(q.answer).toBeGreaterThan(0);
   expect(checkAnswer(q, correctValue(q))).toBe(true);
   expect(answerText(q).en).toBeTruthy();
 }
@@ -57,8 +70,11 @@ describe("nội dung bài học", () => {
     }
   });
 
-  it("đủ 5 bài Chương III theo thứ tự SGK, thuật ngữ không trùng mã giữa các bài", () => {
-    expect(LESSONS.map((l) => l.id)).toEqual(["k8-10", "k8-11", "k8-12", "k8-13", "k8-14"]);
+  it("các bài theo thứ tự SGK, đủ Chương III, thuật ngữ không trùng mã giữa các bài", () => {
+    // Thứ tự học = thứ tự bài trong SGK
+    const nos = LESSONS.map((l) => curLesson(l.id)!.no);
+    expect(nos).toEqual([...nos].sort((a, b) => a - b));
+    expect(LESSONS.filter((l) => l.id >= "k8-10" && l.id <= "k8-14")).toHaveLength(5);
     const ids = LESSONS.flatMap((l) => l.terms.map((t) => t.id));
     expect(new Set(ids).size).toBe(ids.length);
   });

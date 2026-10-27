@@ -1,16 +1,34 @@
 // Danh mục bài học đã có nội dung + cách lấy câu hỏi luyện tập / kiểm tra
 import { bi, shuffle } from "@/lib/content/helpers";
+import { CHIA_DA_THUC } from "@/lib/content/lessons/chia-da-thuc";
+import { CONG_TRU_DA_THUC } from "@/lib/content/lessons/cong-tru-da-thuc";
+import { DA_THUC } from "@/lib/content/lessons/da-thuc";
+import { DON_THUC } from "@/lib/content/lessons/don-thuc";
 import { HINH_BINH_HANH } from "@/lib/content/lessons/hinh-binh-hanh";
 import { HINH_CHU_NHAT } from "@/lib/content/lessons/hinh-chu-nhat";
 import { HINH_THANG_CAN } from "@/lib/content/lessons/hinh-thang-can";
 import { HINH_THOI_HINH_VUONG } from "@/lib/content/lessons/hinh-thoi-hinh-vuong";
+import { NHAN_DA_THUC } from "@/lib/content/lessons/nhan-da-thuc";
 import { TU_GIAC } from "@/lib/content/lessons/tu-giac";
 import type { Bi, LessonContent, Question, Term } from "@/lib/content/types";
 
 export * from "@/lib/content/types";
 
 /** Thứ tự học gợi ý. Thêm bài mới: tạo file trong lessons/ rồi thêm vào đây. */
-export const LESSONS: LessonContent[] = [TU_GIAC, HINH_THANG_CAN, HINH_BINH_HANH, HINH_CHU_NHAT, HINH_THOI_HINH_VUONG];
+export const LESSONS: LessonContent[] = [
+  // Chương I. Đa thức
+  DON_THUC,
+  DA_THUC,
+  CONG_TRU_DA_THUC,
+  NHAN_DA_THUC,
+  CHIA_DA_THUC,
+  // Chương III. Tứ giác
+  TU_GIAC,
+  HINH_THANG_CAN,
+  HINH_BINH_HANH,
+  HINH_CHU_NHAT,
+  HINH_THOI_HINH_VUONG,
+];
 
 export const lessonBySlug = (slug: string) => LESSONS.find((l) => l.slug === slug);
 export const lessonById = (id: string) => LESSONS.find((l) => l.id === id);

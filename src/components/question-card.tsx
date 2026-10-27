@@ -1,9 +1,10 @@
 "use client";
 
-// Thẻ câu hỏi tự chấm: trắc nghiệm / đúng-sai / nhập số / gõ thuật ngữ.
+// Thẻ câu hỏi tự chấm: trắc nghiệm / đúng-sai / nhập số / gõ thuật ngữ / gõ biểu thức.
 // Gợi ý 3 tầng (Từ vựng → Cách làm → Lời giải); trả lời xong hiện đúng/sai + giải thích song ngữ.
 import { useState } from "react";
 import { ArrowRight, Check, Lightbulb, X } from "lucide-react";
+import { ExprInput } from "@/components/expr-input";
 import { cn } from "cn";
 import { ShapeIcon, SHAPE_COLORS, type ShapeKind } from "@/components/brand/shapes";
 import { Tam } from "@/components/brand/tam";
@@ -11,8 +12,8 @@ import { SayButtons } from "@/components/common";
 import { GeoFigure } from "@/components/geo/figure";
 import { T } from "@/components/lang";
 import { Button } from "@/components/ui/button";
-import { answerText, bi, checkAnswer } from "@/lib/content/helpers";
-import type { Question } from "@/lib/content/types";
+import { answerText, bi, checkAnswer, checkExpr } from "@/lib/content/helpers";
+import type { Bi, Question } from "@/lib/content/types";
 
 const SHAPES: ShapeKind[] = ["triangle", "diamond", "circle", "square"];
 const LEVEL = { 1: bi("Recognise", "Nhận biết"), 2: bi("Understand", "Thông hiểu"), 3: bi("Apply", "Vận dụng") } as const;
@@ -34,13 +35,15 @@ export function QuestionCard({
 }) {
   const [hints, setHints] = useState(0);
   const [value, setValue] = useState("");
-  const [result, setResult] = useState<null | { correct: boolean; value: string }>(null);
+  const [result, setResult] = useState<null | { correct: boolean; value: string; note?: Bi }>(null);
   const [shake, setShake] = useState(false);
 
   const submit = (v: string) => {
     if (result || !v.trim()) return;
-    const correct = checkAnswer(q, v);
-    setResult({ correct, value: v });
+    // Câu biểu thức: kèm lời nhắc khi đúng giá trị nhưng sai dạng (chưa phá ngoặc, chưa thu gọn…)
+    const detail = q.type === "expr" ? checkExpr(q, v) : { ok: checkAnswer(q, v) };
+    const correct = detail.ok;
+    setResult({ correct, value: v, note: detail.note });
     if (!correct) {
       setShake(true);
       setTimeout(() => setShake(false), 450);
@@ -150,6 +153,18 @@ export function QuestionCard({
               />
               {q.type === "number" && q.unit && <span className="pr-4 font-display text-lg font-bold text-ink-2">{q.unit.trim()}</span>}
             </div>
+            {q.type === "number" && !done && (
+              // Bàn phím số của điện thoại thường không có dấu trừ → nút đổi dấu
+              <button
+                type="button"
+                onClick={() => setValue((v) => (v.trim().startsWith("−") || v.trim().startsWith("-") ? v.trim().slice(1) : "−" + v.trim()))}
+                className="grid h-14 w-12 place-items-center rounded-2xl border-2 border-line-2 bg-white font-display text-xl font-extrabold"
+                aria-label="Đổi dấu âm / dương"
+                title="Đổi dấu"
+              >
+                ±
+              </button>
+            )}
             {!done && (
               <Button type="submit" size="lg" disabled={!value.trim()}>
                 Kiểm tra
@@ -157,6 +172,8 @@ export function QuestionCard({
             )}
           </form>
         )}
+
+        {q.type === "expr" && <ExprInput value={value} onChange={setValue} onSubmit={() => submit(value)} disabled={done} />}
 
         {/* Gợi ý 3 tầng */}
         {hints > 0 && (
@@ -183,6 +200,7 @@ export function QuestionCard({
             <p className={cn("font-display text-xl font-extrabold", result.correct ? "text-success-fg" : "text-coral-dk")}>
               {result.correct ? `Chính xác! +${hints >= 2 ? 5 : 10} XP` : "Chưa đúng rồi"}
             </p>
+            {result.note && <T v={result.note} block className="text-sm font-bold" />}
             {!result.correct && (
               <p className="text-sm font-semibold">
                 Đáp án: <T v={answerText(q)} />

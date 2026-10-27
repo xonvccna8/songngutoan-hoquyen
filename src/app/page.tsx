@@ -10,6 +10,7 @@ import { LessonCard } from "@/components/lesson-card";
 import { T } from "@/components/lang";
 import { buttonVariants } from "@/components/ui/button";
 import { LESSONS } from "@/lib/content";
+import { chapterOf, chaptersOf } from "@/lib/curriculum";
 import { DAILY_GOAL, lessonDone, nextStep, todayXp } from "@/lib/progress/logic";
 import { STEP_INFO } from "@/lib/progress/steps";
 import { dueCards } from "@/lib/progress/srs";
@@ -59,7 +60,7 @@ export default function Home() {
                 </button>
               </h1>
             )}
-            <p className="mt-1 text-white/80">{started ? "Hôm nay mình học tiếp nhé." : "Bắt đầu với bài Tứ giác nhé — chỉ 10 phút mỗi ngày."}</p>
+            <p className="mt-1 text-white/80">{started ? "Hôm nay mình học tiếp nhé." : "Bắt đầu với bài Đơn thức nhé — chỉ 10 phút mỗi ngày."}</p>
           </div>
           <div className="flex items-center gap-3 rounded-2xl bg-white/10 p-3">
             <Ring value={today / DAILY_GOAL} color="var(--color-sun)" size={68}>
@@ -107,23 +108,30 @@ export default function Home() {
         </Link>
       </section>
 
-      {/* Lộ trình chủ đề */}
-      <section>
-        <SectionTitle
-          action={
-            <Link href="/hoc" className="text-sm font-bold text-blue hover:underline">
-              Xem cả chương trình
-            </Link>
-          }
-        >
-          Chương III: Tứ giác · Quadrilaterals
-        </SectionTitle>
-        <div className="grid gap-3 md:grid-cols-3">
-          {LESSONS.map((l, i) => (
-            <LessonCard key={l.id} lesson={l} index={i} prog={p.lessons[l.id]} />
-          ))}
-        </div>
-      </section>
+      {/* Lộ trình: các chương đã có bài, theo thứ tự SGK */}
+      {chaptersOf(8)
+        .map((ch) => ({ ch, ls: LESSONS.filter((l) => chapterOf(l.id)?.id === ch.id) }))
+        .filter((g) => g.ls.length)
+        .map(({ ch, ls }, gi) => (
+          <section key={ch.id}>
+            <SectionTitle
+              action={
+                gi === 0 ? (
+                  <Link href="/hoc" className="text-sm font-bold text-blue hover:underline">
+                    Xem cả chương trình
+                  </Link>
+                ) : undefined
+              }
+            >
+              Chương {ch.no}: {ch.vi} · <span className="text-en">{ch.en}</span>
+            </SectionTitle>
+            <div className="grid gap-3 md:grid-cols-3">
+              {ls.map((l, i) => (
+                <LessonCard key={l.id} lesson={l} index={i} prog={p.lessons[l.id]} />
+              ))}
+            </div>
+          </section>
+        ))}
 
       {/* Câu tiếng Anh hôm nay */}
       <section className="card-lsn flex flex-wrap items-center gap-4 p-5">

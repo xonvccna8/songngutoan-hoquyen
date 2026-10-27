@@ -50,7 +50,12 @@ export type Question =
   | (QBase & { type: "mcq"; options: Bi[]; answer: number })
   | (QBase & { type: "tf"; answer: boolean })
   | (QBase & { type: "number"; answer: number; unit?: string })
-  | (QBase & { type: "term"; accept: string[] });
+  | (QBase & { type: "term"; accept: string[] })
+  /** Gõ biểu thức đại số; chấm theo giá trị (lib/algebra/poly.ts) và theo dạng yêu cầu */
+  | (QBase & { type: "expr"; answer: string; form?: ExprForm });
+
+/** any: chỉ cần bằng nhau · expanded: đã phá ngoặc · simplified: thu gọn · factored: dạng tích, phân tích triệt để */
+export type ExprForm = "any" | "expanded" | "simplified" | "factored";
 
 /** Khối nội dung trong phần "Hiểu bài" */
 export type Block =

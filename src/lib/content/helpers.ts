@@ -1,4 +1,5 @@
 // Tiện ích soạn nội dung: văn bản song ngữ, số ngẫu nhiên, hình mẫu, chấm câu trả lời
+import { equal, factorCount, isExpanded, isFactored, isSimplified, parse, ParseError, polyOf, toPoly, type Node } from "@/lib/algebra/poly";
 import type { Bi, FigureSpec, Question } from "@/lib/content/types";
 import { norm, similarity } from "@/lib/speech/grading";
 
@@ -38,15 +39,40 @@ export const RIGHT_TRI: FigureSpec["points"] = { A: [60, 165], B: [60, 35], C: [
 
 export const ABCD = ["A", "B", "C", "D"];
 
-/** Đọc số học sinh gõ: chấp nhận "7,5", "7.5 cm", "70°" */
+/** Đọc số học sinh gõ: chấp nhận "7,5", "7.5 cm", "70°", "−6" */
 export function parseNum(v: string): number | null {
-  const m = v.replace(/\s/g, "").replace(",", ".").match(/-?\d+(\.\d+)?/);
+  const m = v.replace(/\s/g, "").replace(/[−–]/g, "-").replace(",", ".").match(/-?\d+(\.\d+)?/);
   return m ? Number(m[0]) : null;
 }
 
-/** Chấm câu trả lời (value: số thứ tự phương án / "true"|"false" / chữ gõ) */
+const unreadable = (e: unknown) => bi("The expression could not be read.", e instanceof ParseError ? e.message : "Biểu thức chưa đọc được.");
+
+/** Chấm câu gõ biểu thức: đúng giá trị VÀ đúng dạng yêu cầu; sai dạng thì kèm lời nhắc */
+export function checkExpr(q: Extract<Question, { type: "expr" }>, value: string): { ok: boolean; note?: Bi } {
+  let node: Node;
+  let same: boolean;
+  try {
+    node = parse(value);
+    same = equal(toPoly(node), polyOf(q.answer));
+  } catch (e) {
+    return { ok: false, note: unreadable(e) };
+  }
+  if (!same) return { ok: false };
+  const form = q.form ?? "any";
+  if (form === "expanded" && !isExpanded(node)) return { ok: false, note: bi("Right value, but expand (remove) the brackets.", "Đúng giá trị nhưng em cần nhân phá ngoặc.") };
+  if (form === "simplified" && !isSimplified(node)) return { ok: false, note: bi("Right value, but collect the like terms.", "Đúng giá trị nhưng em cần thu gọn (gộp các hạng tử đồng dạng).") };
+  if (form === "factored") {
+    if (!isFactored(node)) return { ok: false, note: bi("Right value, but write it as a product.", "Đúng giá trị nhưng em cần viết thành dạng tích.") };
+    if (factorCount(node) < factorCount(parse(q.answer))) return { ok: false, note: bi("A product, but you can factorise further.", "Đã là tích nhưng còn phân tích tiếp được.") };
+  }
+  return { ok: true };
+}
+
+/** Chấm câu trả lời (value: số thứ tự phương án / "true"|"false" / chữ gõ / biểu thức) */
 export function checkAnswer(q: Question, value: string): boolean {
   switch (q.type) {
+    case "expr":
+      return checkExpr(q, value).ok;
     case "mcq":
       return Number(value) === q.answer;
     case "tf":
@@ -78,6 +104,8 @@ export function answerText(q: Question): Bi {
     }
     case "term":
       return bi(q.accept[0], q.accept[0]);
+    case "expr":
+      return bi(q.answer, q.answer);
   }
 }
 

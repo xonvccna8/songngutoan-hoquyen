@@ -14,6 +14,7 @@ Next.js App Router + TypeScript + Tailwind + shadcn/ui + lucide-react + Recharts
 - `src/lib/content/` — nội dung bài (`lessons/*.ts`), kiểu dữ liệu, bộ sinh câu hỏi, chấm điểm
 - `src/lib/progress/` — tiến độ: hàm thuần (`logic.ts`, `srs.ts`) + kho localStorage (`store.ts`)
 - `src/lib/curriculum/` — mục lục + yêu cầu cần đạt Toán 6–9 (lớp 8 đầy đủ)
+- `src/lib/algebra/poly.ts` — bộ máy đa thức: đọc biểu thức em gõ, rút gọn, so sánh, kiểm tra dạng (đáp án Đại số luôn tính bằng bộ máy này qua `src/lib/content/alg.ts`)
 - `src/lib/speech/` — đọc mẫu & chấm phát âm (Web Speech API, không lưu ghi âm)
 - `src/app/` — `/` · `/hoc` · `/hoc/[bai]` · `/hoc/[bai]/[buoc]` · `/on-tap` · `/cong-cu` · `/cua-em`
 - `tests/` — vitest (nội dung + tiến độ)
