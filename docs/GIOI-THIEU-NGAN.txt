@@ -1,0 +1,32 @@
+TOÁN 8 SONG NGỮ
+Web giúp học sinh lớp 8 tự học Toán bằng tiếng Việt và tiếng Anh (sách Kết nối tri thức).
+
+
+VAI TRÒ
+- Hướng dẫn học từng bài, từ dễ đến khó, có gợi ý khi bí.
+- Giúp học sinh nghe, nói, đọc và viết Toán bằng tiếng Anh.
+- Nhắc ôn đúng lúc những từ sắp quên và những câu từng làm sai.
+- Theo dõi tiến bộ và tạo hứng thú học mỗi ngày.
+
+
+TÍNH NĂNG
+- Bài học 5 bước: Từ vựng -> Hiểu bài -> Luyện tập -> Luyện nói -> Kiểm tra.
+- Hình vẽ kéo thả để tự khám phá định lí (tứ giác, Thalès, hình thoi...).
+- Câu hỏi 3 mức độ, máy tự sinh câu mới không giới hạn, gợi ý 3 tầng.
+- Gõ biểu thức đại số, máy tự rút gọn và chấm đúng dạng đáp án.
+- Luyện phát âm: máy nghe em đọc và chấm điểm 0-100.
+- Ôn tập thông minh: lịch ôn từ vựng và sổ lỗi sai (lỗi Toán / lỗi Ngôn ngữ).
+- Góc công cụ: bảng hằng đẳng thức, từ điển thuật ngữ, cách đọc kí hiệu Toán.
+- Điểm XP, chuỗi ngày học, huy hiệu, biểu đồ tiến bộ.
+- Không đăng nhập, không thu thập dữ liệu, học được khi mất mạng.
+
+
+CÔNG NGHỆ SỬ DỤNG
+- Next.js, React, TypeScript: xây dựng trang web.
+- Tailwind CSS, shadcn/ui: thiết kế giao diện đẹp trên điện thoại và máy tính.
+- Recharts: vẽ biểu đồ.
+- Web Speech API: đọc mẫu và chấm phát âm.
+- Bộ máy đại số tự xây dựng: tạo và chấm câu hỏi Toán.
+- localStorage: lưu tiến độ ngay trên máy.
+- PWA: cài như ứng dụng, học không cần mạng.
+- Vercel: đưa web lên Internet.
